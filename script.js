@@ -476,3 +476,1043 @@ document.querySelectorAll("a[href*='wa.me']").forEach((link) => {
     link.href = url.toString();
   }
 });
+
+const assistantWidget = document.getElementById("assistantWidget");
+const assistantToggle = document.getElementById("assistantToggle");
+const assistantClose = document.getElementById("assistantClose");
+const assistantPanel = document.getElementById("assistantPanel");
+const assistantMessages = document.getElementById("assistantMessages");
+const assistantForm = document.getElementById("assistantForm");
+const assistantInput = document.getElementById("assistantInput");
+
+if (assistantWidget && assistantToggle && assistantPanel && assistantMessages && assistantForm && assistantInput) {
+  const assistantWhatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+    "Hello BFTF Construction LLC, I would like to request a free quote."
+  )}`;
+
+  const assistantCopy = {
+    en: {
+      botName: "BFTF Assistant",
+      userName: "You",
+      welcomeTitle: "How can I help?",
+      welcomeText:
+        "I can answer using BFTF Construction LLC service information and keep the conversation focused on the area you ask about.",
+      welcomeItems: [
+        "Roofing, siding and exterior work",
+        "Kitchen, bathroom and interior remodeling",
+        "Flooring, drywall, painting and carpentry",
+        "Concrete, masonry, landscaping, electrical and plumbing"
+      ],
+      quoteRule:
+        "For price, measurements, materials, permits or exact timing, BFTF should review the project first. The inspection and quote are free.",
+      scopeRule:
+        "I only use BFTF's listed service information here. For anything outside that scope, the best next step is to contact the team directly.",
+      contactTitle: "Contact and quote",
+      contactText:
+        "BFTF serves residential and commercial clients in Massachusetts. You can request a free inspection or quote by WhatsApp, phone or email.",
+      contactItems: [
+        "Phone: (508) 562-9898",
+        "Email: bftfconstruction2023@gmail.com",
+        "Location: 29 Forest Rd, Brockton, MA 02301"
+      ],
+      cta: "Open WhatsApp",
+      servicesTitle: "BFTF services",
+      servicesText: "These are the main service areas listed for BFTF Construction LLC.",
+      fallbackTitle: "I can help with BFTF services",
+      fallbackText:
+        "I did not find that exact topic in the company information. Ask me about one of these areas and I will stay focused on it.",
+      thanksTitle: "Glad to help",
+      thanksText: "Tell me the service area you are interested in and I will keep the answer focused there."
+    }
+  };
+
+  const assistantTopics = [
+    {
+      id: "roofing",
+      title: { en: "Roofing Services", es: "Servicios de roofing / techo" },
+      intro: {
+        en: "For roofing, BFTF focuses on roof replacement, repairs, inspections and weather-related protection for residential and commercial properties.",
+        es: "Para roofing o techos, BFTF se enfoca en reemplazos, reparaciones, inspecciones y proteccion contra danos del clima para propiedades residenciales y comerciales."
+      },
+      keywords: [
+        "roof",
+        "roofing",
+        "techo",
+        "tejado",
+        "shingle",
+        "shingles",
+        "flat roof",
+        "rubber roof",
+        "epdm",
+        "metal roof",
+        "leak",
+        "gotera",
+        "filtracion",
+        "flashing",
+        "skylight",
+        "storm damage",
+        "solar panel"
+      ],
+      services: {
+        en: [
+          "Full roof replacement and roof repairs",
+          "Asphalt shingle roofing, flat roofing systems, EPDM rubber roofing and metal roofing",
+          "Leak detection, flashing installation and skylight installation",
+          "Roof inspections, storm damage repairs and insurance claim assistance",
+          "Solar panel removal and reinstallation when roofing work requires it"
+        ],
+        es: [
+          "Reemplazo completo de techo y reparaciones",
+          "Asphalt shingles, sistemas de techo plano, EPDM rubber roofing y metal roofing",
+          "Deteccion de filtraciones, instalacion de flashing e instalacion de skylights",
+          "Inspecciones de techo, reparaciones por tormenta y asistencia con reclamos de seguro",
+          "Remocion y reinstalacion de paneles solares cuando el trabajo de techo lo requiere"
+        ]
+      }
+    },
+    {
+      id: "siding",
+      title: { en: "Siding and Exterior Services", es: "Siding y servicios exteriores" },
+      intro: {
+        en: "For exterior work, BFTF handles siding, trim, gutters, waterproofing and other improvements that protect and refresh the outside of the property.",
+        es: "Para exteriores, BFTF trabaja siding, trim, gutters, waterproofing y mejoras que protegen y renuevan la parte exterior de la propiedad."
+      },
+      keywords: [
+        "siding",
+        "exterior",
+        "vinyl",
+        "hardie",
+        "trim",
+        "soffit",
+        "fascia",
+        "gutter",
+        "gutters",
+        "canaleta",
+        "canaletas",
+        "power washing",
+        "waterproofing",
+        "window",
+        "door",
+        "ventana",
+        "puerta"
+      ],
+      services: {
+        en: [
+          "Vinyl siding installation and Hardie Board siding",
+          "Exterior trim installation, soffit and fascia repairs",
+          "Gutter installation and repairs",
+          "Exterior painting, power washing and exterior waterproofing",
+          "Window and door replacement"
+        ],
+        es: [
+          "Instalacion de vinyl siding y Hardie Board siding",
+          "Instalacion de exterior trim y reparaciones de soffit y fascia",
+          "Instalacion y reparacion de gutters / canaletas",
+          "Pintura exterior, power washing y exterior waterproofing",
+          "Reemplazo de ventanas y puertas"
+        ]
+      }
+    },
+    {
+      id: "kitchen",
+      title: { en: "Kitchen Remodeling", es: "Remodelacion de cocinas" },
+      intro: {
+        en: "For kitchens, BFTF can coordinate the main parts of a renovation from layout upgrades through finish details.",
+        es: "Para cocinas, BFTF puede coordinar las partes principales de una renovacion, desde mejoras de distribucion hasta detalles de acabado."
+      },
+      keywords: [
+        "kitchen",
+        "cocina",
+        "cabinet",
+        "cabinets",
+        "gabinete",
+        "countertop",
+        "backsplash",
+        "island",
+        "isla",
+        "open concept",
+        "lighting",
+        "plumbing upgrade"
+      ],
+      services: {
+        en: [
+          "Full kitchen renovations",
+          "Cabinet installation, countertop installation and backsplash installation",
+          "Kitchen island design and modern open-concept designs",
+          "Flooring installation",
+          "Lighting, electrical upgrades and plumbing upgrades"
+        ],
+        es: [
+          "Remodelaciones completas de cocina",
+          "Instalacion de gabinetes, countertops y backsplash",
+          "Diseno de isla de cocina y conceptos abiertos modernos",
+          "Instalacion de pisos",
+          "Mejoras de iluminacion, electricidad y plomeria"
+        ]
+      }
+    },
+    {
+      id: "bathroom",
+      title: { en: "Bathroom Remodeling", es: "Remodelacion de banos" },
+      intro: {
+        en: "For bathrooms, BFTF covers full renovations, waterproofing and fixture upgrades with modern finish options.",
+        es: "Para banos, BFTF cubre renovaciones completas, waterproofing y mejoras de fixtures con opciones de acabado modernas."
+      },
+      keywords: [
+        "bathroom",
+        "bath",
+        "bano",
+        "banos",
+        "shower",
+        "ducha",
+        "tile",
+        "vanity",
+        "bathtub",
+        "tub",
+        "waterproofing",
+        "fixture",
+        "glass shower"
+      ],
+      services: {
+        en: [
+          "Full bathroom renovations",
+          "Custom shower installation",
+          "Tile wall and floor installation",
+          "Vanity installation and bathtub installation",
+          "Waterproofing systems, glass shower doors and plumbing or fixture upgrades"
+        ],
+        es: [
+          "Remodelaciones completas de bano",
+          "Instalacion de duchas personalizadas",
+          "Instalacion de tile en paredes y pisos",
+          "Instalacion de vanity y bathtub",
+          "Sistemas de waterproofing, puertas de vidrio para ducha y mejoras de plomeria o fixtures"
+        ]
+      }
+    },
+    {
+      id: "flooring",
+      title: { en: "Flooring Services", es: "Servicios de pisos" },
+      intro: {
+        en: "For flooring, BFTF works with common residential and commercial surfaces, including repairs and leveling before the finish goes in.",
+        es: "Para pisos, BFTF trabaja superficies comunes residenciales y comerciales, incluyendo reparaciones y nivelacion antes del acabado."
+      },
+      keywords: [
+        "floor",
+        "flooring",
+        "piso",
+        "pisos",
+        "hardwood",
+        "laminate",
+        "vinyl",
+        "tile",
+        "epoxy",
+        "leveling",
+        "stair",
+        "escalera"
+      ],
+      services: {
+        en: [
+          "Hardwood flooring, laminate flooring and vinyl flooring",
+          "Tile installation and epoxy flooring",
+          "Floor repairs and floor leveling",
+          "Stair finishing"
+        ],
+        es: [
+          "Hardwood flooring, laminate flooring y vinyl flooring",
+          "Instalacion de tile y epoxy flooring",
+          "Reparaciones y nivelacion de pisos",
+          "Acabado de escaleras"
+        ]
+      }
+    },
+    {
+      id: "drywallPainting",
+      title: { en: "Drywall and Painting", es: "Drywall y pintura" },
+      intro: {
+        en: "For walls, ceilings and paint, BFTF can handle drywall installation, repair work and interior or exterior painting.",
+        es: "Para paredes, techos interiores y pintura, BFTF puede trabajar drywall, reparaciones y pintura interior o exterior."
+      },
+      keywords: [
+        "drywall",
+        "sheetrock",
+        "wall",
+        "walls",
+        "pared",
+        "paredes",
+        "ceiling",
+        "ceilings",
+        "cielo raso",
+        "painting",
+        "paint",
+        "pintura",
+        "texture",
+        "taping",
+        "water damage",
+        "stain"
+      ],
+      services: {
+        en: [
+          "Drywall installation, sheetrock repairs and ceiling replacement",
+          "Taping, finishing and texture matching",
+          "Interior painting and exterior painting",
+          "Water damage repairs, stain blocking and restoration"
+        ],
+        es: [
+          "Instalacion de drywall, reparaciones de sheetrock y reemplazo de ceiling",
+          "Taping, finishing y texture matching",
+          "Pintura interior y exterior",
+          "Reparaciones por dano de agua, stain blocking y restauracion"
+        ]
+      }
+    },
+    {
+      id: "carpentry",
+      title: { en: "Carpentry Services", es: "Carpinteria" },
+      intro: {
+        en: "For carpentry, BFTF covers structural and finish details that shape rooms, openings and outdoor living areas.",
+        es: "Para carpinteria, BFTF cubre detalles estructurales y de acabado para espacios interiores, aperturas y areas exteriores."
+      },
+      keywords: [
+        "carpentry",
+        "carpinteria",
+        "framing",
+        "finish carpentry",
+        "crown molding",
+        "molding",
+        "baseboard",
+        "trim",
+        "closet",
+        "closets",
+        "deck",
+        "porch",
+        "window framing"
+      ],
+      services: {
+        en: [
+          "Framing and finish carpentry",
+          "Crown molding, baseboards and trim",
+          "Custom closets",
+          "Interior and exterior door installation",
+          "Window framing, deck construction and porch construction"
+        ],
+        es: [
+          "Framing y finish carpentry",
+          "Crown molding, baseboards y trim",
+          "Closets personalizados",
+          "Instalacion de puertas interiores y exteriores",
+          "Window framing, construccion de decks y porches"
+        ]
+      }
+    },
+    {
+      id: "concrete",
+      title: { en: "Concrete and Masonry", es: "Concreto y masonry" },
+      intro: {
+        en: "For concrete and masonry, BFTF works on hard surfaces, retaining structures and repair needs around the property.",
+        es: "Para concreto y masonry, BFTF trabaja superficies, estructuras de contencion y reparaciones alrededor de la propiedad."
+      },
+      keywords: [
+        "concrete",
+        "concreto",
+        "masonry",
+        "slab",
+        "driveway",
+        "sidewalk",
+        "patio",
+        "retaining wall",
+        "stairs",
+        "brick",
+        "stone",
+        "foundation"
+      ],
+      services: {
+        en: [
+          "Concrete slabs, driveways, sidewalks and patios",
+          "Retaining walls, concrete stairs and decorative concrete",
+          "Brick and stone work",
+          "Foundation repairs"
+        ],
+        es: [
+          "Concrete slabs, driveways, sidewalks y patios",
+          "Retaining walls, escaleras de concreto y decorative concrete",
+          "Trabajos de brick y stone",
+          "Reparaciones de foundation"
+        ]
+      }
+    },
+    {
+      id: "landscaping",
+      title: { en: "Landscaping and Outdoor Services", es: "Landscaping y exteriores" },
+      intro: {
+        en: "For outdoor areas, BFTF can support grading, drainage, lighting, fencing and surface improvements.",
+        es: "Para areas exteriores, BFTF puede apoyar con nivelacion, drenaje, iluminacion, cercas y mejoras de superficie."
+      },
+      keywords: [
+        "landscaping",
+        "landscape",
+        "yard",
+        "patio",
+        "outdoor",
+        "jardin",
+        "land leveling",
+        "excavation",
+        "synthetic grass",
+        "sod",
+        "outdoor lighting",
+        "decorative stone",
+        "fence",
+        "drainage"
+      ],
+      services: {
+        en: [
+          "Land leveling and excavation",
+          "Synthetic grass installation and sod installation",
+          "Outdoor lighting and decorative stone installation",
+          "Fence installation, drainage systems and retaining walls"
+        ],
+        es: [
+          "Land leveling y excavation",
+          "Instalacion de synthetic grass y sod",
+          "Outdoor lighting e instalacion de decorative stone",
+          "Instalacion de fences, drainage systems y retaining walls"
+        ]
+      }
+    },
+    {
+      id: "electricalPlumbing",
+      title: { en: "Electrical and Plumbing Services", es: "Electricidad y plomeria" },
+      intro: {
+        en: "For electrical and plumbing needs, BFTF lists practical installation, upgrade and repair services tied to remodels and property maintenance.",
+        es: "Para electricidad y plomeria, BFTF lista servicios practicos de instalacion, mejoras y reparaciones conectadas a remodelaciones y mantenimiento."
+      },
+      keywords: [
+        "electrical",
+        "electric",
+        "electricidad",
+        "wiring",
+        "outlet",
+        "switch",
+        "panel",
+        "lighting",
+        "plumbing",
+        "plomeria",
+        "water heater",
+        "pipe",
+        "pipes",
+        "drain",
+        "leak repair"
+      ],
+      services: {
+        en: [
+          "Outlet and switch installation",
+          "Recessed lighting, electrical wiring, panel upgrades and exterior lighting",
+          "Water heater installation",
+          "Pipe repairs, leak repairs, bathroom and kitchen plumbing and drain repairs"
+        ],
+        es: [
+          "Instalacion de outlets y switches",
+          "Recessed lighting, electrical wiring, panel upgrades y exterior lighting",
+          "Instalacion de water heaters",
+          "Reparaciones de pipes, leak repairs, plomeria de bano/cocina y drain repairs"
+        ]
+      }
+    },
+    {
+      id: "residentialCommercial",
+      title: { en: "Residential and Commercial Services", es: "Servicios residenciales y comerciales" },
+      intro: {
+        en: "BFTF serves both homeowners and commercial clients with solutions sized to the project.",
+        es: "BFTF atiende tanto a duenos de casa como a clientes comerciales con soluciones adaptadas al tamano del proyecto."
+      },
+      keywords: [
+        "residential",
+        "commercial",
+        "residencial",
+        "comercial",
+        "office",
+        "oficina",
+        "retail",
+        "property maintenance",
+        "maintenance",
+        "emergency",
+        "repairs"
+      ],
+      services: {
+        en: [
+          "Residential construction",
+          "Commercial renovations",
+          "Office remodeling and retail construction",
+          "Property maintenance",
+          "Emergency repairs"
+        ],
+        es: [
+          "Construccion residencial",
+          "Renovaciones comerciales",
+          "Remodelacion de oficinas y retail construction",
+          "Property maintenance",
+          "Emergency repairs"
+        ]
+      }
+    },
+    {
+      id: "remodeling",
+      title: { en: "Remodeling Focus", es: "Enfoque en remodelaciones" },
+      intro: {
+        en: "For remodeling, BFTF can focus on the area the client wants to improve and combine the needed trades into one coordinated scope.",
+        es: "Para remodelaciones, BFTF puede enfocarse en el area que el cliente quiere mejorar y combinar los oficios necesarios en un solo alcance coordinado."
+      },
+      keywords: [
+        "remodel",
+        "remodeling",
+        "renovation",
+        "renovations",
+        "renovate",
+        "remodelacion",
+        "remodelaciones",
+        "remodelar",
+        "renovacion",
+        "renovaciones",
+        "renovar",
+        "home improvement",
+        "interior",
+        "interiores",
+        "acabado",
+        "acabados",
+        "living room",
+        "sala",
+        "bedroom",
+        "dormitorio"
+      ],
+      services: {
+        en: [
+          "Kitchen remodeling: cabinets, countertops, backsplash, islands, flooring, lighting, electrical and plumbing upgrades",
+          "Bathroom remodeling: custom showers, tile walls and floors, vanities, bathtubs, waterproofing and fixture upgrades",
+          "Interior surfaces: flooring, drywall, sheetrock, ceiling replacement, taping, finishing and texture matching",
+          "Painting and restoration: interior paint, exterior paint, water damage repairs and stain blocking",
+          "Carpentry and finishes: framing, trim, crown molding, baseboards, closets, doors, windows, decks and porches",
+          "Commercial spaces: office remodeling, retail construction, property maintenance and emergency repairs"
+        ],
+        es: [
+          "Cocinas: gabinetes, countertops, backsplash, islas, pisos, iluminacion, electricidad y plomeria",
+          "Banos: duchas personalizadas, tile en paredes y pisos, vanities, bathtubs, waterproofing y fixtures",
+          "Interiores: pisos, drywall, sheetrock, reemplazo de ceiling, taping, finishing y texture matching",
+          "Pintura y restauracion: pintura interior/exterior, reparaciones por dano de agua y stain blocking",
+          "Carpinteria y acabados: framing, trim, crown molding, baseboards, closets, puertas, ventanas, decks y porches",
+          "Espacios comerciales: remodelacion de oficinas, retail construction, property maintenance y emergency repairs"
+        ]
+      }
+    }
+  ];
+
+  const assistantServiceOverview = {
+    en: [
+      "Roofing Services",
+      "Siding and Exterior Services",
+      "Kitchen Remodeling",
+      "Bathroom Remodeling",
+      "Flooring Services",
+      "Drywall and Painting",
+      "Carpentry Services",
+      "Concrete and Masonry",
+      "Landscaping and Outdoor Services",
+      "Electrical and Plumbing Services",
+      "Residential and Commercial Services"
+    ],
+    es: [
+      "Roofing / techos",
+      "Siding y servicios exteriores",
+      "Remodelacion de cocinas",
+      "Remodelacion de banos",
+      "Servicios de pisos",
+      "Drywall y pintura",
+      "Carpinteria",
+      "Concreto y masonry",
+      "Landscaping y exteriores",
+      "Electricidad y plomeria",
+      "Servicios residenciales y comerciales"
+    ]
+  };
+
+  const spanishHints = [
+    "hola",
+    "quiero",
+    "necesito",
+    "cotizacion",
+    "precio",
+    "cuanto",
+    "que",
+    "incluye",
+    "mas",
+    "servicio",
+    "servicios",
+    "hacen",
+    "techo",
+    "cocina",
+    "bano",
+    "pisos",
+    "pintura",
+    "plomeria",
+    "electricidad",
+    "remodelacion",
+    "gracias"
+  ];
+
+  const englishHints = [
+    "hello",
+    "hi",
+    "need",
+    "quote",
+    "price",
+    "cost",
+    "service",
+    "services",
+    "roof",
+    "kitchen",
+    "bathroom",
+    "flooring",
+    "painting",
+    "plumbing",
+    "electrical",
+    "remodel",
+    "thanks"
+  ];
+
+  const priceOrTimeTerms = [
+    "price",
+    "pricing",
+    "cost",
+    "estimate",
+    "quote",
+    "how much",
+    "timeline",
+    "time",
+    "schedule",
+    "permit",
+    "permits",
+    "precio",
+    "precios",
+    "costo",
+    "cuanto",
+    "cotizacion",
+    "estimado",
+    "tiempo",
+    "cuando",
+    "permiso",
+    "permisos"
+  ];
+
+  let activeAssistantTopic = null;
+  let assistantHasWelcomed = false;
+  let activeAssistantTypewriter = null;
+
+  function normalizeAssistantText(value) {
+    return value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function getAssistantLanguage() {
+    return "en";
+  }
+
+  function hasAnyTerm(normalized, terms) {
+    return terms.some((term) => normalized.includes(term));
+  }
+
+  function isGreeting(normalized) {
+    return /^(hi|hello|hey|hola|buenas|buenos dias|buenas tardes|buenas noches)$/.test(normalized);
+  }
+
+  function isThanks(normalized) {
+    return /^(thanks|thank you|gracias|muchas gracias|ok gracias|perfecto gracias)$/.test(normalized);
+  }
+
+  function isServicesOverview(normalized) {
+    return [
+      "services",
+      "service list",
+      "what do you do",
+      "what services",
+      "servicios",
+      "lista de servicios",
+      "que servicios",
+      "que hacen",
+      "trabajos realizan"
+    ].some((term) => normalized.includes(term));
+  }
+
+  function isContactQuestion(normalized) {
+    return [
+      "contact",
+      "phone",
+      "call",
+      "email",
+      "quote",
+      "estimate",
+      "price",
+      "cost",
+      "address",
+      "location",
+      "whatsapp",
+      "inspection",
+      "contacto",
+      "telefono",
+      "llamar",
+      "correo",
+      "cotizacion",
+      "estimado",
+      "precio",
+      "costo",
+      "direccion",
+      "ubicacion",
+      "inspeccion"
+    ].some((term) => normalized.includes(term));
+  }
+
+  function isFollowUp(normalized) {
+    return [
+      "what includes",
+      "what is included",
+      "more details",
+      "tell me more",
+      "how does it work",
+      "que incluye",
+      "incluye",
+      "mas detalles",
+      "dime mas",
+      "como funciona",
+      "y eso",
+      "tambien"
+    ].some((term) => normalized.includes(term));
+  }
+
+  function findAssistantTopic(message) {
+    const normalized = normalizeAssistantText(message);
+    let bestTopic = null;
+    let bestScore = 0;
+
+    assistantTopics.forEach((topic) => {
+      const score = topic.keywords.reduce((total, keyword) => {
+        const normalizedKeyword = normalizeAssistantText(keyword);
+        if (!normalizedKeyword || !normalized.includes(normalizedKeyword)) return total;
+        return total + (normalizedKeyword.includes(" ") ? 3 : 2);
+      }, 0);
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestTopic = topic;
+      }
+    });
+
+    return bestScore > 0 ? bestTopic : null;
+  }
+
+  function buildWelcomeResponse(lang) {
+    return {
+      title: assistantCopy[lang].welcomeTitle,
+      text: assistantCopy[lang].welcomeText,
+      items: assistantCopy[lang].welcomeItems,
+      note: assistantCopy[lang].quoteRule
+    };
+  }
+
+  function buildContactResponse(lang) {
+    return {
+      title: assistantCopy[lang].contactTitle,
+      text: assistantCopy[lang].contactText,
+      items: assistantCopy[lang].contactItems,
+      note: assistantCopy[lang].quoteRule,
+      cta: { label: assistantCopy[lang].cta, href: assistantWhatsappUrl }
+    };
+  }
+
+  function buildOverviewResponse(lang) {
+    return {
+      title: assistantCopy[lang].servicesTitle,
+      text: assistantCopy[lang].servicesText,
+      items: assistantServiceOverview[lang],
+      note: assistantCopy[lang].scopeRule,
+      cta: { label: assistantCopy[lang].cta, href: assistantWhatsappUrl }
+    };
+  }
+
+  function buildTopicResponse(topic, lang, message) {
+    const normalized = normalizeAssistantText(message);
+    const needsQuoteRule = hasAnyTerm(normalized, priceOrTimeTerms);
+
+    return {
+      title: topic.title[lang],
+      text: topic.intro[lang],
+      items: topic.services[lang],
+      note: needsQuoteRule ? assistantCopy[lang].quoteRule : assistantCopy[lang].scopeRule,
+      cta: { label: assistantCopy[lang].cta, href: assistantWhatsappUrl }
+    };
+  }
+
+  function buildFallbackResponse(lang) {
+    return {
+      title: assistantCopy[lang].fallbackTitle,
+      text: assistantCopy[lang].fallbackText,
+      items: assistantServiceOverview[lang],
+      note: assistantCopy[lang].scopeRule
+    };
+  }
+
+  function buildThanksResponse(lang) {
+    return {
+      title: assistantCopy[lang].thanksTitle,
+      text: assistantCopy[lang].thanksText
+    };
+  }
+
+  function getAssistantResponse(message) {
+    const lang = getAssistantLanguage(message);
+    const normalized = normalizeAssistantText(message);
+
+    if (!normalized || isGreeting(normalized)) {
+      return { lang, response: buildWelcomeResponse(lang) };
+    }
+
+    if (isThanks(normalized)) {
+      return { lang, response: buildThanksResponse(lang) };
+    }
+
+    if (isServicesOverview(normalized)) {
+      return { lang, response: buildOverviewResponse(lang) };
+    }
+
+    const detectedTopic = findAssistantTopic(message);
+    if (detectedTopic) {
+      activeAssistantTopic = detectedTopic;
+      return { lang, response: buildTopicResponse(detectedTopic, lang, message) };
+    }
+
+    if (activeAssistantTopic && (isFollowUp(normalized) || hasAnyTerm(normalized, priceOrTimeTerms))) {
+      return { lang, response: buildTopicResponse(activeAssistantTopic, lang, message) };
+    }
+
+    if (isContactQuestion(normalized)) {
+      return { lang, response: buildContactResponse(lang) };
+    }
+
+    return { lang, response: buildFallbackResponse(lang) };
+  }
+
+  function clearAssistantTypewriter() {
+    if (!activeAssistantTypewriter) return;
+    activeAssistantTypewriter.finish();
+    activeAssistantTypewriter = null;
+  }
+
+  function createAssistantTypewriter(article, segments, cta) {
+    let timer = 0;
+    let segmentIndex = 0;
+    let characterIndex = 0;
+    let isFinished = false;
+    const chunkSize = 4;
+    const typingDelay = 8;
+
+    function keepAssistantScrolled() {
+      assistantMessages.scrollTop = assistantMessages.scrollHeight;
+    }
+
+    function appendCta() {
+      if (!cta || cta.link.isConnected) return;
+      cta.container.appendChild(cta.link);
+    }
+
+    function finish() {
+      if (isFinished) return;
+      isFinished = true;
+      window.clearTimeout(timer);
+      segments.forEach(({ element, text }) => {
+        element.textContent = text;
+      });
+      appendCta();
+      article.classList.remove("is-typing");
+      keepAssistantScrolled();
+    }
+
+    function typeNextChunk() {
+      if (isFinished) return;
+
+      const segment = segments[segmentIndex];
+      if (!segment) {
+        finish();
+        activeAssistantTypewriter = null;
+        return;
+      }
+
+      characterIndex = Math.min(segment.text.length, characterIndex + chunkSize);
+      segment.element.textContent = segment.text.slice(0, characterIndex);
+      keepAssistantScrolled();
+
+      if (characterIndex >= segment.text.length) {
+        segmentIndex += 1;
+        characterIndex = 0;
+        timer = window.setTimeout(typeNextChunk, 70);
+        return;
+      }
+
+      timer = window.setTimeout(typeNextChunk, typingDelay);
+    }
+
+    return {
+      finish,
+      start() {
+        timer = window.setTimeout(typeNextChunk, 110);
+      }
+    };
+  }
+
+  function appendAssistantMessage(role, message, lang = "en", options = {}) {
+    const article = document.createElement("article");
+    article.className = `assistant-message is-${role}`;
+
+    const label = document.createElement("strong");
+    label.textContent = role === "user" ? assistantCopy[lang].userName : assistantCopy[lang].botName;
+    article.appendChild(label);
+
+    if (role === "user") {
+      const text = document.createElement("p");
+      text.textContent = message;
+      article.appendChild(text);
+    } else {
+      const shouldAnimate = Boolean(options.animate);
+      const segments = [];
+
+      function addBotTextElement(element, text) {
+        article.appendChild(element);
+        if (shouldAnimate) {
+          segments.push({ element, text });
+          return;
+        }
+        element.textContent = text;
+      }
+
+      if (message.title) {
+        const title = document.createElement("p");
+        addBotTextElement(title, message.title);
+      }
+
+      if (message.text) {
+        const text = document.createElement("p");
+        addBotTextElement(text, message.text);
+      }
+
+      if (message.items?.length) {
+        const list = document.createElement("ul");
+        message.items.forEach((item) => {
+          const listItem = document.createElement("li");
+          if (shouldAnimate) {
+            segments.push({ element: listItem, text: item });
+          } else {
+            listItem.textContent = item;
+          }
+          list.appendChild(listItem);
+        });
+        article.appendChild(list);
+      }
+
+      if (message.note) {
+        const note = document.createElement("p");
+        note.className = "assistant-note";
+        addBotTextElement(note, message.note);
+      }
+
+      let cta = null;
+      if (message.cta) {
+        const link = document.createElement("a");
+        link.href = message.cta.href;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = message.cta.label;
+        if (shouldAnimate) {
+          cta = { container: article, link };
+        } else {
+          article.appendChild(link);
+        }
+      }
+
+      if (shouldAnimate) {
+        clearAssistantTypewriter();
+        article.classList.add("is-typing");
+        activeAssistantTypewriter = createAssistantTypewriter(article, segments, cta);
+      }
+    }
+
+    assistantMessages.appendChild(article);
+    assistantMessages.scrollTop = assistantMessages.scrollHeight;
+
+    if (role === "bot" && options.animate) {
+      activeAssistantTypewriter?.start();
+    }
+  }
+
+  function askAssistant(question) {
+    const cleanQuestion = question.trim();
+    if (!cleanQuestion) return;
+
+    clearAssistantTypewriter();
+    const lang = getAssistantLanguage(cleanQuestion);
+    appendAssistantMessage("user", cleanQuestion, lang);
+    const result = getAssistantResponse(cleanQuestion);
+    window.setTimeout(() => appendAssistantMessage("bot", result.response, result.lang, { animate: true }), 160);
+  }
+
+  function openAssistant() {
+    assistantWidget.classList.add("is-open");
+    assistantToggle.setAttribute("aria-expanded", "true");
+    assistantToggle.setAttribute("aria-label", "Close BFTF assistant");
+    assistantPanel.setAttribute("aria-hidden", "false");
+
+    if (!assistantHasWelcomed) {
+      assistantHasWelcomed = true;
+      appendAssistantMessage("bot", buildWelcomeResponse("en"), "en", { animate: true });
+    }
+
+    window.setTimeout(() => assistantInput.focus(), 80);
+  }
+
+  function closeAssistantPanel() {
+    assistantWidget.classList.remove("is-open");
+    assistantToggle.setAttribute("aria-expanded", "false");
+    assistantToggle.setAttribute("aria-label", "Open BFTF assistant");
+    assistantPanel.setAttribute("aria-hidden", "true");
+  }
+
+  assistantToggle.addEventListener("click", () => {
+    if (assistantWidget.classList.contains("is-open")) {
+      closeAssistantPanel();
+      return;
+    }
+
+    openAssistant();
+  });
+
+  assistantClose?.addEventListener("click", closeAssistantPanel);
+
+  assistantForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    askAssistant(assistantInput.value);
+    assistantInput.value = "";
+  });
+
+  assistantPanel.querySelectorAll("[data-question]").forEach((button) => {
+    button.addEventListener("click", () => {
+      askAssistant(button.dataset.question || "");
+      assistantInput.focus();
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && assistantWidget.classList.contains("is-open")) {
+      closeAssistantPanel();
+    }
+  });
+}
