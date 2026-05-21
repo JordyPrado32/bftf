@@ -6,36 +6,34 @@
     <meta name="description" content="BFTF Construction LLC provides residential and commercial construction, roofing, remodeling, siding, concrete, carpentry, flooring, drywall, electrical and plumbing services in Massachusetts.">
     <title>BFTF Construction LLC | Massachusetts Construction Services</title>
     <link rel="icon" href="assets/brand/bftf-logo.png">
-    <link rel="preload" as="image" href="assets/images/hero-house.jpg">
+    <link rel="preload" as="image" href="assets/brand/bftf-logo-limpio.svg">
+    <link rel="preload" as="image" href="assets/optimized/images/hero-house.webp">
     <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./assets/vendor/three/three.module.js",
+          "three/addons/": "./assets/vendor/three/addons/"
+        }
+      }
+    </script>
   </head>
   <body>
     <div class="site-loader" id="siteLoader" aria-live="polite" aria-label="Loading BFTF Construction LLC">
       <div class="loader-site">
-        <div class="loader-photo-card">
-          <img id="loaderImage" src="assets/images/hero-house.jpg" alt="">
-          <span class="loader-shine"></span>
+        <div class="loader-logo-stage" aria-hidden="true">
+          <span></span>
+          <img class="loader-mark" src="assets/brand/bftf-logo-limpio.svg" alt="">
         </div>
-        <img class="loader-logo" src="assets/brand/bftf-logo.png" alt="BFTF Construction LLC">
         <div class="loader-copy">
           <strong>BFTF Construction LLC</strong>
-          <span>Preparing the job site</span>
+          <span>Home Improvement</span>
         </div>
-        <div class="loader-progress">
+        <div class="loader-progress" aria-hidden="true">
           <span></span>
-          <svg class="loader-dozer" viewBox="0 0 150 82" aria-hidden="true">
-            <path d="M12 58h92l22-22h13v30H12z" fill="#f97316"/>
-            <path d="M32 35h44l16 23H22z" fill="#ffd54f"/>
-            <path d="M84 48h22l18-18 8 8-24 25H84z" fill="#2c2f33"/>
-            <path d="M7 59h118v13H7z" fill="#0b0b0b"/>
-            <circle cx="36" cy="67" r="10" fill="#6b7280"/>
-            <circle cx="74" cy="67" r="10" fill="#6b7280"/>
-            <path d="M123 50l22-9v26l-22-5z" fill="#d4a017"/>
-            <path d="M41 42h18v12H41z" fill="#ffffff"/>
-          </svg>
         </div>
       </div>
-      <p>Building the site</p>
+      <p>Preparing your project</p>
     </div>
 
     <div class="scroll-rig" aria-hidden="true">
@@ -79,7 +77,7 @@
     <main id="home">
       <section class="hero">
         <div class="hero-media" aria-hidden="true">
-          <img src="assets/images/hero-house.jpg" alt="">
+          <img src="assets/optimized/images/hero-house.webp" alt="">
         </div>
         <div class="blueprint-grid" aria-hidden="true"></div>
         <div class="corner-rig corner-rig-left" aria-hidden="true">
@@ -92,35 +90,73 @@
           <span></span>
           <span></span>
         </div>
-        <div class="container hero-content">
-          <p class="eyebrow">Backed by more than 10 years of experience</p>
-          <h1>Massachusetts construction, remodeling and roofing.</h1>
-          <p class="hero-copy">BFTF Construction LLC delivers residential and commercial roofing, remodeling, siding, interiors, concrete, carpentry, flooring and repair work with clean finishes, reliable communication and free inspections.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="https://wa.me/15085629898?text=Hello%20BFTF%20Construction%20LLC%2C%20I%20would%20like%20to%20request%20a%20free%20quote." target="_blank" rel="noopener">
-              <span class="btn-icon" aria-hidden="true"></span>
-              WhatsApp Quote
-            </a>
-            <a class="btn btn-secondary" href="#work">View Work</a>
+        <div class="container hero-layout">
+          <div class="hero-content">
+            <p class="eyebrow">Backed by more than 15 years of experience</p>
+            <h1>Home improvement and roofing in Massachusetts.</h1>
+            <p class="hero-copy">BFTF Construction LLC brings roofing, siding, kitchens, bathrooms, interiors, concrete and repair work into one coordinated crew, with clear scopes, clean finishes and free inspections before the first tool comes out.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://wa.me/15085629898?text=Hello%20BFTF%20Construction%20LLC%2C%20I%20would%20like%20to%20request%20a%20free%20quote." target="_blank" rel="noopener">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" focusable="false">
+                    <path d="M16.02 3.2A12.75 12.75 0 0 0 5.1 22.55L3.45 28.6l6.2-1.62A12.77 12.77 0 1 0 16.02 3.2Zm0 2.48a10.29 10.29 0 1 1-5.24 19.15l-.38-.23-3.67.96.98-3.57-.25-.39A10.28 10.28 0 0 1 16.02 5.68Zm-4.2 4.93c-.22 0-.57.08-.87.41-.3.33-1.14 1.12-1.14 2.73 0 1.61 1.17 3.17 1.34 3.39.16.22 2.26 3.62 5.6 4.93 2.78 1.1 3.35.88 3.95.82.61-.06 1.96-.8 2.24-1.57.28-.78.28-1.44.2-1.58-.08-.14-.3-.22-.63-.39-.33-.17-1.96-.97-2.26-1.08-.31-.11-.53-.17-.75.17-.22.33-.86 1.08-1.06 1.3-.19.22-.39.25-.72.08-.33-.17-1.4-.52-2.66-1.65-.98-.88-1.65-1.96-1.84-2.29-.19-.33-.02-.51.15-.67.15-.15.33-.39.5-.58.17-.2.22-.33.33-.56.11-.22.06-.42-.03-.59-.08-.17-.75-1.81-1.03-2.48-.27-.65-.55-.56-.75-.57h-.57Z"/>
+                  </svg>
+                </span>
+                WhatsApp Quote
+              </a>
+              <a class="btn btn-secondary" href="#work">View Work</a>
+            </div>
+            <div class="hero-stats" aria-label="Company highlights">
+              <div>
+                <strong>15+</strong>
+                <span>Years of experience</span>
+              </div>
+              <div>
+                <strong>Free</strong>
+                <span>Inspection & quote</span>
+              </div>
+              <div>
+                <strong>MA</strong>
+                <span>Residential & commercial</span>
+              </div>
+            </div>
           </div>
-          <div class="hero-stats" aria-label="Company highlights">
-            <div>
-              <strong>10+</strong>
-              <span>Years of experience</span>
-            </div>
-            <div>
-              <strong>Free</strong>
-              <span>Inspection & quote</span>
-            </div>
-            <div>
-              <strong>MA</strong>
-              <span>Residential & commercial</span>
+          <div class="hero-side">
+            <aside class="hero-service-panel" aria-label="Featured home improvement services">
+              <span>Home Improvement</span>
+              <strong>One team for exterior protection and interior upgrades.</strong>
+              <ul>
+                <li>Roofing, siding and storm repairs</li>
+                <li>Kitchens, baths and finished living space</li>
+                <li>Concrete, carpentry, drywall and paint</li>
+              </ul>
+            </aside>
+            <div class="hero-badge" aria-label="BFTF Home Improvement">
+              <img src="assets/brand/bftf-logo.png" alt="BFTF Construction LLC logo">
+              <span>Home Improvement</span>
             </div>
           </div>
         </div>
-        <div class="hero-badge" aria-label="BFTF motto">
-          <img src="assets/brand/bftf-logo.png" alt="">
-          <span>Build For The Future</span>
+      </section>
+
+      <section class="video-showcase" id="videos" aria-label="Project videos">
+        <div class="container video-showcase-layout">
+          <div class="video-showcase-copy reveal">
+            <p class="eyebrow">Project videos</p>
+            <h2>See the work in motion.</h2>
+            <p>Large job-site clips from the gallery folder, ready to browse one by one without leaving the page.</p>
+          </div>
+          <div class="video-player-shell reveal">
+            <button class="video-nav video-prev" id="videoPrev" type="button" aria-label="Previous project video">
+              <span aria-hidden="true"></span>
+            </button>
+            <div class="video-frame">
+              <video id="galleryVideoPlayer" controls autoplay muted playsinline preload="metadata" poster="assets/optimized/images/hero-house.webp"></video>
+            </div>
+            <button class="video-nav video-next" id="videoNext" type="button" aria-label="Next project video">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -141,15 +177,15 @@
 
       <section class="section services-section" id="services">
         <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Built from the ground up</p>
+          <div class="section-heading heading-left reveal">
+            <p class="eyebrow">Built for home improvement</p>
             <h2>Construction services that cover the whole property.</h2>
-            <p>BFTF handles exterior protection, interior remodeling and structural repairs, giving homeowners and commercial clients one dependable crew for every stage.</p>
+            <p>BFTF handles exterior protection, interior remodeling and structural repairs, giving homeowners and commercial clients one dependable crew from the first inspection through final cleanup.</p>
           </div>
           <div class="services-grid">
             <article class="service-card reveal">
               <div class="service-visual">
-                <img src="assets/images/roofing.jpg" alt="Finished asphalt shingle roof" loading="lazy">
+                <img src="assets/optimized/images/roofing.webp" alt="Finished asphalt shingle roof" loading="lazy">
                 <span>Roofing</span>
               </div>
               <div class="service-body">
@@ -159,7 +195,7 @@
             </article>
             <article class="service-card reveal">
               <div class="service-visual">
-                <img src="assets/images/siding.jpg" alt="Siding and exterior trim work" loading="lazy">
+                <img src="assets/optimized/images/siding.webp" alt="Siding and exterior trim work" loading="lazy">
                 <span>Exterior</span>
               </div>
               <div class="service-body">
@@ -169,7 +205,7 @@
             </article>
             <article class="service-card reveal">
               <div class="service-visual">
-                <img src="assets/images/kitchen.jpg" alt="Kitchen renovation with cabinets and backsplash" loading="lazy">
+                <img src="assets/optimized/images/kitchen.webp" alt="Kitchen renovation with cabinets and backsplash" loading="lazy">
                 <span>Kitchens</span>
               </div>
               <div class="service-body">
@@ -179,7 +215,7 @@
             </article>
             <article class="service-card reveal">
               <div class="service-visual">
-                <img src="assets/images/bathroom.jpg" alt="Bathroom remodel with modern fixtures" loading="lazy">
+                <img src="assets/optimized/images/bathroom.webp" alt="Bathroom remodel with modern fixtures" loading="lazy">
                 <span>Bathrooms</span>
               </div>
               <div class="service-body">
@@ -189,7 +225,7 @@
             </article>
             <article class="service-card reveal">
               <div class="service-visual">
-                <img src="assets/images/basement.jpg" alt="Finished interior remodel with flooring and walls" loading="lazy">
+                <img src="assets/optimized/images/basement.webp" alt="Finished interior remodel with flooring and walls" loading="lazy">
                 <span>Interiors</span>
               </div>
               <div class="service-body">
@@ -199,7 +235,7 @@
             </article>
             <article class="service-card reveal">
               <div class="service-visual">
-                <img src="assets/images/framing.jpg" alt="Interior framing and carpentry work in progress" loading="lazy">
+                <img src="assets/optimized/images/framing.webp" alt="Interior framing and carpentry work in progress" loading="lazy">
                 <span>Build-out</span>
               </div>
               <div class="service-body">
@@ -213,10 +249,10 @@
 
       <section class="section work-section" id="work">
         <div class="container">
-          <div class="section-heading reveal">
+          <div class="section-heading heading-right reveal">
             <p class="eyebrow">Photos from real projects</p>
             <h2>Finished work, active job sites and remodel details.</h2>
-            <p>Use the filters to scan the kind of work you need. Every image comes from the client materials provided for BFTF Construction LLC.</p>
+            <p>Use the filters to scan roofing, exterior and interior work without hunting through a wall of photos. The first grid highlights the services clients ask for most often.</p>
           </div>
 
           <div class="gallery-controls reveal" aria-label="Project filters">
@@ -228,57 +264,57 @@
           </div>
 
           <div class="gallery-grid" id="galleryGrid">
-            <figure class="gallery-card reveal" data-category="exterior">
-              <img src="assets/images/exterior-build.jpg" alt="Residential exterior construction project by BFTF Construction LLC" loading="lazy">
+            <figure class="gallery-card reveal wide" data-category="exterior">
+              <img src="assets/optimized/images/exterior-build.webp" alt="Residential exterior construction project by BFTF Construction LLC" loading="lazy">
               <figcaption>
                 <strong>Residential exterior</strong>
                 <span>Complete property upgrades</span>
               </figcaption>
             </figure>
             <figure class="gallery-card reveal tall" data-category="roofing">
-              <img src="assets/images/roofing.jpg" alt="Finished asphalt shingle roof by BFTF Construction LLC" loading="lazy">
+              <img src="assets/optimized/images/roofing.webp" alt="Finished asphalt shingle roof by BFTF Construction LLC" loading="lazy">
               <figcaption>
                 <strong>Roofing</strong>
                 <span>Shingle systems and inspections</span>
               </figcaption>
             </figure>
             <figure class="gallery-card reveal" data-category="interior">
-              <img src="assets/images/kitchen.jpg" alt="Kitchen remodeling project with white cabinets and backsplash" loading="lazy">
+              <img src="assets/optimized/images/kitchen.webp" alt="Kitchen remodeling project with white cabinets and backsplash" loading="lazy">
               <figcaption>
                 <strong>Kitchen remodeling</strong>
                 <span>Cabinets, counters and lighting</span>
               </figcaption>
             </figure>
-            <figure class="gallery-card reveal" data-category="interior">
-              <img src="assets/images/bathroom.jpg" alt="Bathroom remodeling project with illuminated mirror and tile work" loading="lazy">
+            <figure class="gallery-card reveal tall" data-category="interior">
+              <img src="assets/optimized/images/bathroom.webp" alt="Bathroom remodeling project with illuminated mirror and tile work" loading="lazy">
               <figcaption>
                 <strong>Bathroom remodeling</strong>
                 <span>Tile, fixtures and clean finishes</span>
               </figcaption>
             </figure>
             <figure class="gallery-card reveal wide" data-category="framing">
-              <img src="assets/images/framing.jpg" alt="Interior framing and construction work in progress" loading="lazy">
+              <img src="assets/optimized/images/framing.webp" alt="Interior framing and construction work in progress" loading="lazy">
               <figcaption>
                 <strong>Framing</strong>
                 <span>Layout, structure and build-out</span>
               </figcaption>
             </figure>
             <figure class="gallery-card reveal" data-category="exterior">
-              <img src="assets/images/siding.jpg" alt="House siding and exterior trim project" loading="lazy">
+              <img src="assets/optimized/images/siding.webp" alt="House siding and exterior trim project" loading="lazy">
               <figcaption>
                 <strong>Siding & trim</strong>
                 <span>Exterior repair and protection</span>
               </figcaption>
             </figure>
-            <figure class="gallery-card reveal" data-category="roofing">
-              <img src="assets/images/roofing-work.jpg" alt="Roofing materials prepared on a job site" loading="lazy">
+            <figure class="gallery-card reveal tall" data-category="roofing">
+              <img src="assets/optimized/images/roofing-work.webp" alt="Roofing materials prepared on a job site" loading="lazy">
               <figcaption>
                 <strong>Roof replacement</strong>
                 <span>Prepared materials, precise install</span>
               </figcaption>
             </figure>
             <figure class="gallery-card reveal" data-category="interior">
-              <img src="assets/images/basement.jpg" alt="Basement interior remodeling with bathroom and kitchenette" loading="lazy">
+              <img src="assets/optimized/images/basement.webp" alt="Basement interior remodeling with bathroom and kitchenette" loading="lazy">
               <figcaption>
                 <strong>Interior renovation</strong>
                 <span>Basements, baths and living space</span>
@@ -293,10 +329,10 @@
 
       <section class="section full-gallery-section" id="gallery">
         <div class="container">
-          <div class="section-heading reveal">
+          <div class="section-heading heading-left reveal">
             <p class="eyebrow">Complete project gallery</p>
             <h2>All project photos in one automatic carousel.</h2>
-            <p>The curated sample stays above in Photos from real projects. This carousel keeps the full body of work easy to browse.</p>
+            <p>The curated sample stays above for quick scanning, while this carousel keeps the full body of work moving in a compact, browsable strip.</p>
           </div>
           <div class="gallery-carousel-block reveal" id="galleryCarouselBlock">
             <div class="gallery-carousel-heading">
@@ -304,7 +340,6 @@
                 <p class="eyebrow">Full gallery</p>
                 <h3>Recent work, rotating automatically.</h3>
               </div>
-              <span id="galleryCount">Gallery ready</span>
             </div>
             <div class="gallery-carousel-viewport" id="galleryCarouselViewport">
               <div class="gallery-carousel-track" id="galleryCarouselTrack"></div>
@@ -315,33 +350,40 @@
 
       <section class="section process-section" id="process">
         <div class="container process-layout">
-          <div class="process-copy reveal">
-            <p class="eyebrow">How the work moves</p>
-            <h2>From free inspection to a clean final walkthrough.</h2>
-            <p>Customers get a practical plan, transparent scope and a crew focused on durable results. BFTF works on both residential and commercial projects, including emergency repairs and property maintenance.</p>
-            <a class="btn btn-dark" href="#contact">Start a Project</a>
+          <div class="process-visual reveal" aria-label="Interactive 3D home model">
+            <div class="process-three-card">
+              <div class="process-three" id="processThree"></div>
+            </div>
           </div>
-          <div class="build-timeline" aria-label="BFTF project process">
-            <article class="timeline-step reveal">
-              <span>01</span>
-              <h3>Inspect</h3>
-              <p>Review the property, problem area, measurements and project goals.</p>
-            </article>
-            <article class="timeline-step reveal">
-              <span>02</span>
-              <h3>Plan</h3>
-              <p>Define materials, finishes, schedule and a clear quote.</p>
-            </article>
-            <article class="timeline-step reveal">
-              <span>03</span>
-              <h3>Build</h3>
-              <p>Execute roofing, remodeling, repairs or construction with steady updates.</p>
-            </article>
-            <article class="timeline-step reveal">
-              <span>04</span>
-              <h3>Finish</h3>
-              <p>Walk the project, clean the site and confirm satisfaction.</p>
-            </article>
+          <div class="process-flow">
+            <div class="process-copy reveal">
+              <p class="eyebrow">How the work moves</p>
+              <h2>From free inspection to a clean final walkthrough.</h2>
+              <p>Customers get a practical plan, transparent scope and a crew focused on durable results. BFTF works on residential and commercial projects, with room for urgent repairs, planned upgrades and property maintenance.</p>
+              <a class="btn btn-dark" href="#contact">Start a Project</a>
+            </div>
+            <div class="build-timeline" aria-label="BFTF project process">
+              <article class="timeline-step reveal">
+                <span>01</span>
+                <h3>Inspect</h3>
+                <p>Review the property, problem area, measurements and project goals.</p>
+              </article>
+              <article class="timeline-step reveal">
+                <span>02</span>
+                <h3>Plan</h3>
+                <p>Define materials, finishes, schedule and a clear quote.</p>
+              </article>
+              <article class="timeline-step reveal">
+                <span>03</span>
+                <h3>Build</h3>
+                <p>Execute roofing, remodeling, repairs or construction with steady updates.</p>
+              </article>
+              <article class="timeline-step reveal">
+                <span>04</span>
+                <h3>Finish</h3>
+                <p>Walk the project, clean the site and confirm satisfaction.</p>
+              </article>
+            </div>
           </div>
         </div>
       </section>
@@ -349,11 +391,12 @@
       <section class="section capabilities-section">
         <div class="container capabilities-layout">
           <div class="capability-photo reveal">
-            <img src="assets/images/exterior-tall.jpg" alt="Multi-level exterior project by BFTF Construction LLC" loading="lazy">
+            <img src="assets/optimized/images/exterior-tall.webp" alt="Multi-level exterior project by BFTF Construction LLC" loading="lazy">
           </div>
           <div class="capability-list reveal">
             <p class="eyebrow">One crew, many trades</p>
             <h2>Repairs, designs and complete remodeling.</h2>
+            <p class="capability-intro">The service mix is built for real properties: exterior systems that protect the structure, interior improvements that make the space useful, and trade work that keeps the project moving without handoffs.</p>
             <div class="trade-columns">
               <ul>
                 <li>Residential construction</li>
@@ -500,7 +543,7 @@
       </div>
       <div class="footer-bottom">
         <span>BFTF Construction LLC</span>
-        <span>Build For The Future</span>
+        <span>Home Improvement</span>
       </div>
     </footer>
 
@@ -509,12 +552,13 @@
       <img id="lightboxImage" src="" alt="BFTF Construction LLC project photo">
     </div>
 
-    <aside class="video-ad" id="videoAd" aria-label="Project video preview">
-      <button class="video-close" id="videoClose" type="button" aria-label="Close project video"></button>
-      <span>Project video</span>
-      <video id="videoAdPlayer" muted playsinline controls></video>
-    </aside>
+    <a class="whatsapp-float" href="https://wa.me/15085629898?text=Hello%20BFTF%20Construction%20LLC%2C%20I%20would%20like%20to%20request%20a%20free%20quote." target="_blank" rel="noopener" aria-label="Contact BFTF on WhatsApp">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <path d="M16.02 3.2A12.75 12.75 0 0 0 5.1 22.55L3.45 28.6l6.2-1.62A12.77 12.77 0 1 0 16.02 3.2Zm0 2.48a10.29 10.29 0 1 1-5.24 19.15l-.38-.23-3.67.96.98-3.57-.25-.39A10.28 10.28 0 0 1 16.02 5.68Zm-4.2 4.93c-.22 0-.57.08-.87.41-.3.33-1.14 1.12-1.14 2.73 0 1.61 1.17 3.17 1.34 3.39.16.22 2.26 3.62 5.6 4.93 2.78 1.1 3.35.88 3.95.82.61-.06 1.96-.8 2.24-1.57.28-.78.28-1.44.2-1.58-.08-.14-.3-.22-.63-.39-.33-.17-1.96-.97-2.26-1.08-.31-.11-.53-.17-.75.17-.22.33-.86 1.08-1.06 1.3-.19.22-.39.25-.72.08-.33-.17-1.4-.52-2.66-1.65-.98-.88-1.65-1.96-1.84-2.29-.19-.33-.02-.51.15-.67.15-.15.33-.39.5-.58.17-.2.22-.33.33-.56.11-.22.06-.42-.03-.59-.08-.17-.75-1.81-1.03-2.48-.27-.65-.55-.56-.75-.57h-.57Z"/>
+      </svg>
+    </a>
 
     <script src="script.js"></script>
+    <script type="module" src="three-process.js"></script>
   </body>
 </html>

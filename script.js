@@ -1,23 +1,8 @@
 const phoneNumber = "15085629898";
 const contactEmail = "bftfconstruction2023@gmail.com";
-const loaderImage = document.getElementById("loaderImage");
-const loaderImages = [
-  "assets/images/hero-house.jpg",
-  "assets/images/exterior-build.jpg",
-  "assets/images/roofing.jpg",
-  "assets/images/roofing-work.jpg",
-  "assets/images/kitchen.jpg",
-  "assets/images/bathroom.jpg",
-  "assets/images/framing.jpg",
-  "assets/images/siding.jpg",
-  "assets/images/basement.jpg",
-  "assets/images/exterior-tall.jpg"
-];
-
-if (loaderImage) {
-  loaderImage.src = loaderImages[Math.floor(Math.random() * loaderImages.length)];
-}
-
+const loaderStartedAt = Date.now();
+const loaderMinimumDuration = 1400;
+const loaderFallbackDuration = 2600;
 document.body.classList.add("is-loading");
 
 const loader = document.getElementById("siteLoader");
@@ -30,11 +15,19 @@ function hideLoader() {
   document.body.classList.remove("is-loading");
 }
 
-window.addEventListener("load", () => {
-  window.setTimeout(hideLoader, 950);
-});
+function hideLoaderAfterMinimum() {
+  const elapsed = Date.now() - loaderStartedAt;
+  const remaining = Math.max(0, loaderMinimumDuration - elapsed);
+  window.setTimeout(hideLoader, remaining);
+}
 
-window.setTimeout(hideLoader, 1800);
+if (document.readyState === "complete") {
+  hideLoaderAfterMinimum();
+} else {
+  window.addEventListener("load", hideLoaderAfterMinimum);
+}
+
+window.setTimeout(hideLoader, loaderFallbackDuration);
 
 const header = document.getElementById("siteHeader");
 const scrollBar = document.getElementById("scrollBar");
@@ -118,23 +111,15 @@ filterButtons.forEach((button) => {
 });
 
 const fullGalleryImages = Array.from({ length: 122 }, (_, index) => {
-  return `assets/gallery/photo-${String(index + 1).padStart(3, "0")}.jpg`;
+  return `assets/optimized/gallery/photo-${String(index + 1).padStart(3, "0")}.webp`;
 });
 const galleryCarouselTrack = document.getElementById("galleryCarouselTrack");
-const galleryCarouselViewport = document.getElementById("galleryCarouselViewport");
-const galleryCount = document.getElementById("galleryCount");
 const galleryLightbox = document.getElementById("galleryLightbox");
 const lightboxImage = document.getElementById("lightboxImage");
 const lightboxClose = document.getElementById("lightboxClose");
+const galleryBatchSize = 24;
 let fullGalleryOpened = false;
-let galleryAutoTimer = 0;
-
-function updateGalleryCount() {
-  if (!galleryCount) return;
-  galleryCount.textContent = fullGalleryOpened
-    ? `${fullGalleryImages.length} photos in automatic carousel`
-    : `${fullGalleryImages.length} photos available`;
-}
+let galleryBatchStart = 0;
 
 function openLightbox(src) {
   if (!galleryLightbox || !lightboxImage) return;
@@ -150,74 +135,72 @@ function closeLightbox() {
   lightboxImage.src = "";
 }
 
-function createGalleryButton(src, itemNumber, className) {
+function createGalleryButton(src, itemNumber, className, isClone = false) {
   const button = document.createElement("button");
   button.className = className;
   button.type = "button";
   button.setAttribute("aria-label", `Open project photo ${itemNumber}`);
-  button.innerHTML = `<img src="${src}" alt="BFTF Construction LLC project photo ${itemNumber}" loading="lazy">`;
+  if (isClone) {
+    button.tabIndex = -1;
+  }
+  button.innerHTML = `<img src="${src}" alt="BFTF Construction LLC project photo ${itemNumber}" loading="lazy" decoding="async" fetchpriority="low">`;
   button.addEventListener("click", () => openLightbox(src));
   return button;
 }
 
-function galleryStep() {
-  const firstItem = galleryCarouselTrack?.querySelector(".carousel-gallery-item");
-  return firstItem ? firstItem.getBoundingClientRect().width + 14 : 320;
+function getGalleryBatch() {
+  return Array.from({ length: Math.min(galleryBatchSize, fullGalleryImages.length) }, (_, offset) => {
+    const index = (galleryBatchStart + offset) % fullGalleryImages.length;
+    return {
+      index,
+      src: fullGalleryImages[index]
+    };
+  });
 }
 
-function scrollGallery(direction = 1) {
-  if (!galleryCarouselViewport) return;
-  const nearEnd =
-    galleryCarouselViewport.scrollLeft + galleryCarouselViewport.clientWidth >=
-    galleryCarouselViewport.scrollWidth - galleryStep() * 0.8;
-
-  if (direction > 0 && nearEnd) {
-    galleryCarouselViewport.scrollTo({ left: 0, behavior: "smooth" });
-    return;
+function createGallerySet(images, isClone = false) {
+  const set = document.createElement("div");
+  set.className = "gallery-carousel-set";
+  if (isClone) {
+    set.setAttribute("aria-hidden", "true");
   }
 
-  if (direction < 0 && galleryCarouselViewport.scrollLeft <= 4) {
-    galleryCarouselViewport.scrollTo({ left: galleryCarouselViewport.scrollWidth, behavior: "smooth" });
-    return;
-  }
+  images.forEach(({ src, index }) => {
+    set.appendChild(createGalleryButton(src, index + 1, "carousel-gallery-item", isClone));
+  });
 
-  galleryCarouselViewport.scrollBy({ left: galleryStep() * direction, behavior: "smooth" });
+  return set;
 }
 
-function startGalleryAutoplay() {
-  if (galleryAutoTimer || !galleryCarouselViewport) return;
-  galleryAutoTimer = window.setInterval(() => scrollGallery(1), 2600);
+function renderGalleryBatch() {
+  if (!galleryCarouselTrack) return;
+  const images = getGalleryBatch();
+  galleryCarouselTrack.replaceChildren(createGallerySet(images, false), createGallerySet(images, true));
 }
 
-function stopGalleryAutoplay() {
-  window.clearInterval(galleryAutoTimer);
-  galleryAutoTimer = 0;
+function rotateGalleryBatch() {
+  galleryBatchStart = (galleryBatchStart + galleryBatchSize) % fullGalleryImages.length;
+  renderGalleryBatch();
 }
 
 function openFullGallery() {
-  if (fullGalleryOpened) return;
+  if (fullGalleryOpened || !galleryCarouselTrack) return;
   fullGalleryOpened = true;
-
-  fullGalleryImages.forEach((src, index) => {
-    galleryCarouselTrack?.appendChild(createGalleryButton(src, index + 1, "carousel-gallery-item"));
-  });
-
-  updateGalleryCount();
-  startGalleryAutoplay();
+  renderGalleryBatch();
+  galleryCarouselTrack.addEventListener("animationiteration", rotateGalleryBatch);
 }
 
-updateGalleryCount();
 document.querySelectorAll('a[href="#gallery"]').forEach((link) => {
   link.addEventListener("click", openFullGallery);
 });
 if (window.location.hash === "#gallery") {
   openFullGallery();
 }
-
-galleryCarouselViewport?.addEventListener("mouseenter", stopGalleryAutoplay);
-galleryCarouselViewport?.addEventListener("mouseleave", startGalleryAutoplay);
-galleryCarouselViewport?.addEventListener("focusin", stopGalleryAutoplay);
-galleryCarouselViewport?.addEventListener("focusout", startGalleryAutoplay);
+window.addEventListener("hashchange", () => {
+  if (window.location.hash === "#gallery") {
+    openFullGallery();
+  }
+});
 
 const gallerySection = document.getElementById("gallery");
 if (gallerySection) {
@@ -233,6 +216,16 @@ if (gallerySection) {
   galleryObserver.observe(gallerySection);
 }
 
+if (gallerySection && galleryCarouselTrack && "IntersectionObserver" in window) {
+  const galleryMotionObserver = new IntersectionObserver(
+    (entries) => {
+      galleryCarouselTrack.classList.toggle("is-paused", !entries.some((entry) => entry.isIntersecting));
+    },
+    { threshold: 0.05 }
+  );
+  galleryMotionObserver.observe(gallerySection);
+}
+
 lightboxClose?.addEventListener("click", closeLightbox);
 galleryLightbox?.addEventListener("click", (event) => {
   if (event.target === galleryLightbox) closeLightbox();
@@ -241,65 +234,109 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeLightbox();
 });
 
-const videoSources = [
-  "Imagenes/IMG_1951.MOV",
-  "Imagenes/IMG_6675.MOV",
-  "Imagenes/IMG_6676.MOV"
+const galleryVideoFiles = [
+  "assets/optimized/videos/whatsapp-video-2026-05-17-at-11-24-22-pm.mp4",
+  "assets/optimized/videos/whatsapp-video-2026-05-17-at-11-24-21-pm.mp4",
+  "assets/optimized/videos/whatsapp-video-2026-05-17-at-11-20-18-pm.mp4",
+  "assets/optimized/videos/whatsapp-video-2026-05-17-at-11-24-19-pm.mp4",
+  "assets/optimized/videos/whatsapp-video-2026-05-17-at-11-21-45-pm.mp4",
+  "assets/optimized/videos/whatsapp-video-2026-05-17-at-11-21-33-pm.mp4",
+  "assets/optimized/videos/whatsapp-video-2026-05-17-at-11-24-19-pm-1.mp4",
+  "assets/optimized/videos/img-6672.mp4",
+  "assets/optimized/videos/img-1172.mp4",
+  "assets/optimized/videos/img-1171.mp4",
+  "assets/optimized/videos/img-5943.mp4",
+  "assets/optimized/videos/img-3576.mp4",
+  "assets/optimized/videos/img-5216.mp4",
+  "assets/optimized/videos/img-1775.mp4",
+  "assets/optimized/videos/img-1935.mp4",
+  "assets/optimized/videos/img-6674.mp4",
+  "assets/optimized/videos/img-6673.mp4",
+  "assets/optimized/videos/img-7357.mp4",
+  "assets/optimized/videos/img-6675.mp4",
+  "assets/optimized/videos/img-2265.mp4",
+  "assets/optimized/videos/img-1273.mp4",
+  "assets/optimized/videos/img-1951.mp4",
+  "assets/optimized/videos/img-7323.mp4",
+  "assets/optimized/videos/img-3968.mp4",
+  "assets/optimized/videos/img-0685.mp4"
 ];
-const videoAd = document.getElementById("videoAd");
-const videoClose = document.getElementById("videoClose");
-const videoAdPlayer = document.getElementById("videoAdPlayer");
-let currentVideoIndex = -1;
-let videoAdClosed = false;
+const galleryVideos = galleryVideoFiles.map((src, index) => ({
+  src,
+  title: `Project video ${index + 1}`
+}));
+const galleryVideoPlayer = document.getElementById("galleryVideoPlayer");
+const videoPrev = document.getElementById("videoPrev");
+const videoNext = document.getElementById("videoNext");
+const videoSection = document.querySelector(".video-showcase");
+let activeGalleryVideo = 0;
+let videoCanAutoplay = !videoSection;
 
-function nextVideoIndex() {
-  if (videoSources.length < 2) return 0;
-  let next = currentVideoIndex;
-  while (next === currentVideoIndex) {
-    next = Math.floor(Math.random() * videoSources.length);
+function applyVideoSoundPreference() {
+  if (!galleryVideoPlayer) return;
+  galleryVideoPlayer.muted = true;
+  galleryVideoPlayer.defaultMuted = true;
+  galleryVideoPlayer.volume = 0;
+}
+
+function playActiveGalleryVideo() {
+  if (!galleryVideoPlayer) return;
+  if (document.hidden || !videoCanAutoplay) return;
+  galleryVideoPlayer.play().catch(() => {});
+}
+
+function setGalleryVideo(index, shouldPlay = true) {
+  if (!galleryVideoPlayer || !galleryVideos.length) return;
+  activeGalleryVideo = (index + galleryVideos.length) % galleryVideos.length;
+  const video = galleryVideos[activeGalleryVideo];
+  galleryVideoPlayer.src = encodeURI(video.src);
+  galleryVideoPlayer.poster = "assets/optimized/images/hero-house.webp";
+  galleryVideoPlayer.autoplay = true;
+  galleryVideoPlayer.playsInline = true;
+  applyVideoSoundPreference();
+  galleryVideoPlayer.load();
+
+  if (shouldPlay) {
+    playActiveGalleryVideo();
   }
-  return next;
 }
 
-function playVideoAt(index) {
-  if (!videoAd || !videoAdPlayer || !videoSources.length) return;
-  if (videoAdClosed) return;
-  currentVideoIndex = index;
-  videoAdPlayer.src = videoSources[currentVideoIndex];
-  videoAdPlayer.poster = "assets/images/hero-house.jpg";
-  videoAd.classList.add("is-visible");
-  videoAdPlayer.currentTime = 0;
-  videoAdPlayer.play().catch(() => {
-    videoAdPlayer.controls = true;
-  });
+function changeGalleryVideo(direction) {
+  setGalleryVideo(activeGalleryVideo + direction, true);
 }
 
-function showRandomVideoAd() {
-  videoAdClosed = false;
-  playVideoAt(nextVideoIndex());
-}
-
-videoAdPlayer?.addEventListener("ended", () => {
-  if (videoAdClosed) return;
-  playVideoAt(nextVideoIndex());
+applyVideoSoundPreference();
+videoCanAutoplay = !videoSection || videoSection.getBoundingClientRect().top < window.innerHeight;
+setGalleryVideo(0, videoCanAutoplay);
+videoPrev?.addEventListener("click", () => changeGalleryVideo(-1));
+videoNext?.addEventListener("click", () => changeGalleryVideo(1));
+galleryVideoPlayer?.addEventListener("ended", () => {
+  setGalleryVideo(activeGalleryVideo + 1, true);
 });
 
-videoAdPlayer?.addEventListener("error", () => {
-  if (videoAdClosed) return;
-  playVideoAt(nextVideoIndex());
-});
+if (videoSection && galleryVideoPlayer && "IntersectionObserver" in window) {
+  const videoObserver = new IntersectionObserver(
+    (entries) => {
+      videoCanAutoplay = entries.some((entry) => entry.isIntersecting);
+      if (videoCanAutoplay) {
+        playActiveGalleryVideo();
+      } else {
+        galleryVideoPlayer.pause();
+      }
+    },
+    { threshold: 0.18 }
+  );
+  videoObserver.observe(videoSection);
+}
 
-videoClose?.addEventListener("click", () => {
-  videoAdClosed = true;
-  videoAd?.classList.remove("is-visible");
-  if (videoAdPlayer) {
-    videoAdPlayer.pause();
-    videoAdPlayer.removeAttribute("src");
-    videoAdPlayer.load();
+document.addEventListener("visibilitychange", () => {
+  if (!galleryVideoPlayer) return;
+  if (document.hidden) {
+    galleryVideoPlayer.pause();
+    return;
   }
+  playActiveGalleryVideo();
 });
-
-window.setTimeout(showRandomVideoAd, 4200);
 
 const emailForm = document.getElementById("emailForm");
 const formStatus = document.getElementById("formStatus");

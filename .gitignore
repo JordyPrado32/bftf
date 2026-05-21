@@ -427,3 +427,14 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# BFTF generated/local publishing artifacts
+dist/
+
+# BFTF original heavy media sources.
+# The site uses assets/optimized/** for web delivery.
+assets/gallery/
+assets/images/
+
+# Codex temporary files
+.codex*
