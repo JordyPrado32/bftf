@@ -3,10 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="BFTF Construction LLC provides residential and commercial construction, roofing, remodeling, siding, concrete, carpentry, flooring, drywall, electrical and plumbing services in Massachusetts.">
-    <title>BFTF Construction LLC | Massachusetts Construction Services</title>
+    <meta name="description" content="BFTF Construction LLC provides residential and commercial construction, roofing, remodeling, siding, concrete, carpentry, flooring, drywall, electrical and plumbing services in Massachusetts and Rhode Island.">
+    <title>BFTF Construction LLC | Massachusetts and Rhode Island Construction Services</title>
     <link rel="icon" href="assets/brand/bftf-logo.png">
-    <link rel="preload" as="image" href="assets/brand/bftf-logo-limpio.svg">
     <link rel="preload" as="image" href="assets/optimized/images/hero-house.webp">
     <link rel="stylesheet" href="styles.css">
     <script type="importmap">
@@ -21,25 +20,38 @@
   <body>
     <div class="site-loader" id="siteLoader" aria-live="polite" aria-label="Loading BFTF Construction LLC">
       <div class="loader-site">
-        <div class="loader-logo-stage" aria-hidden="true">
-          <span></span>
-          <img class="loader-mark" src="assets/brand/bftf-logo-limpio.svg" alt="">
+        <div class="loader-photo-card">
+          <img id="loaderImage" src="assets/optimized/gallery/photo-001.webp" alt="">
+          <span class="loader-shine"></span>
         </div>
+        <img class="loader-logo" src="assets/brand/bftf-logo.png" alt="BFTF Construction LLC">
         <div class="loader-copy">
           <strong>BFTF Construction LLC</strong>
-          <span>Home Improvement</span>
+          <span>Preparing the job site</span>
         </div>
-        <div class="loader-progress" aria-hidden="true">
+        <div class="loader-progress">
           <span></span>
+          <span class="loader-three-cart" id="loaderThreeCart" aria-hidden="true">
+            <svg class="cart-fallback" viewBox="0 0 150 82" aria-hidden="true">
+              <path d="M12 58h92l22-22h13v30H12z" fill="#f97316"/>
+              <path d="M32 35h44l16 23H22z" fill="#ffd54f"/>
+              <path d="M84 48h22l18-18 8 8-24 25H84z" fill="#2c2f33"/>
+              <path d="M7 59h118v13H7z" fill="#0b0b0b"/>
+              <circle cx="36" cy="67" r="10" fill="#6b7280"/>
+              <circle cx="74" cy="67" r="10" fill="#6b7280"/>
+              <path d="M123 50l22-9v26l-22-5z" fill="#d4a017"/>
+              <path d="M41 42h18v12H41z" fill="#ffffff"/>
+            </svg>
+          </span>
         </div>
       </div>
-      <p>Preparing your project</p>
+      <p>Building the site</p>
     </div>
 
     <div class="scroll-rig" aria-hidden="true">
       <span class="scroll-bar" id="scrollBar"></span>
       <span class="scroll-machine" id="scrollMachine">
-        <svg viewBox="0 0 150 82" aria-hidden="true">
+        <svg class="cart-fallback" viewBox="0 0 150 82" aria-hidden="true">
           <path d="M12 58h92l22-22h13v30H12z" fill="currentColor"/>
           <path d="M32 35h44l16 23H22z" fill="#ffd54f"/>
           <path d="M84 48h22l18-18 8 8-24 25H84z" fill="#2c2f33"/>
@@ -93,7 +105,7 @@
         <div class="container hero-layout">
           <div class="hero-content">
             <p class="eyebrow">Backed by more than 15 years of experience</p>
-            <h1>Home improvement and roofing in Massachusetts.</h1>
+            <h1>Home improvement and roofing in Massachusetts and Rhode Island.</h1>
             <p class="hero-copy">BFTF Construction LLC brings roofing, siding, kitchens, bathrooms, interiors, concrete and repair work into one coordinated crew, with clear scopes, clean finishes and free inspections before the first tool comes out.</p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="https://wa.me/15085629898?text=Hello%20BFTF%20Construction%20LLC%2C%20I%20would%20like%20to%20request%20a%20free%20quote." target="_blank" rel="noopener">
@@ -116,7 +128,7 @@
                 <span>Inspection & quote</span>
               </div>
               <div>
-                <strong>MA</strong>
+                <strong>MA &amp; RI</strong>
                 <span>Residential & commercial</span>
               </div>
             </div>
@@ -151,7 +163,7 @@
               <span aria-hidden="true"></span>
             </button>
             <div class="video-frame">
-              <video id="galleryVideoPlayer" controls autoplay muted playsinline preload="metadata" poster="assets/optimized/images/hero-house.webp"></video>
+              <video id="galleryVideoPlayer" controls autoplay muted playsinline preload="none" poster="assets/optimized/images/hero-house.webp"></video>
             </div>
             <button class="video-nav video-next" id="videoNext" type="button" aria-label="Next project video">
               <span aria-hidden="true"></span>
@@ -171,7 +183,7 @@
         </div>
         <div class="strip-item">
           <span>Location</span>
-          <a href="https://www.google.com/maps/search/?api=1&query=29%20FOREST%20RD%2002301%20BROCKTON%20MA" target="_blank" rel="noopener">29 FOREST RD 02301 BROCKTON MA</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Massachusetts%20and%20Rhode%20Island" target="_blank" rel="noopener">Massachusetts and Rhode Island</a>
         </div>
       </section>
 
@@ -180,7 +192,15 @@
           <div class="section-heading heading-left reveal">
             <p class="eyebrow">Built for home improvement</p>
             <h2>Construction services that cover the whole property.</h2>
-            <p>BFTF handles exterior protection, interior remodeling and structural repairs, giving homeowners and commercial clients one dependable crew from the first inspection through final cleanup.</p>
+            <div class="section-heading-copy">
+              <p>BFTF handles exterior protection, interior remodeling and structural repairs, giving homeowners and commercial clients one dependable crew from the first inspection through final cleanup.</p>
+              <p>Projects can combine roofing, siding, kitchens, bathrooms, flooring, drywall, painting, concrete, carpentry, electrical and plumbing so the scope stays coordinated instead of split between disconnected trades.</p>
+              <ul>
+                <li>Free inspection and practical project recommendations before quoting.</li>
+                <li>Residential and commercial work across Massachusetts and Rhode Island.</li>
+                <li>Repair, remodel and full build-out support from prep through finish.</li>
+              </ul>
+            </div>
           </div>
           <div class="services-grid">
             <article class="service-card reveal">
@@ -249,10 +269,18 @@
 
       <section class="section work-section" id="work">
         <div class="container">
-          <div class="section-heading heading-right reveal">
+          <div class="section-heading heading-left reveal">
             <p class="eyebrow">Photos from real projects</p>
             <h2>Finished work, active job sites and remodel details.</h2>
-            <p>Use the filters to scan roofing, exterior and interior work without hunting through a wall of photos. The first grid highlights the services clients ask for most often.</p>
+            <div class="section-heading-copy">
+              <p>The gallery shows the kind of work BFTF actually performs: roof replacements, siding and trim, framed interiors, kitchen upgrades, bathroom remodels and finished living areas.</p>
+              <p>Each project category gives a quick look at materials, site conditions and finish quality, from rough framing and roof prep to clean trim lines, tile, cabinets and exterior protection.</p>
+              <ul>
+                <li>Roofing: shingles, flat systems, repairs, inspections and storm damage work.</li>
+                <li>Interiors: kitchens, bathrooms, basements, drywall, flooring and paint.</li>
+                <li>Exterior and framing: siding, trim, decks, porches, carpentry and build-outs.</li>
+              </ul>
+            </div>
           </div>
 
           <div class="gallery-controls reveal" aria-label="Project filters">
@@ -321,9 +349,6 @@
               </figcaption>
             </figure>
           </div>
-          <div class="work-gallery-link reveal">
-            <a class="btn btn-primary" href="#gallery">Open Full Gallery</a>
-          </div>
         </div>
       </section>
 
@@ -332,7 +357,15 @@
           <div class="section-heading heading-left reveal">
             <p class="eyebrow">Complete project gallery</p>
             <h2>All project photos in one automatic carousel.</h2>
-            <p>The curated sample stays above for quick scanning, while this carousel keeps the full body of work moving in a compact, browsable strip.</p>
+            <div class="section-heading-copy">
+              <p>This full gallery keeps the broader body of work visible, including job-site progress, finished rooms, exterior upgrades and detail shots that show how the work comes together.</p>
+              <p>It is useful for comparing finishes, spotting construction details and choosing the kind of project conversation to start with BFTF before scheduling a free inspection.</p>
+              <ul>
+                <li>Interior and exterior examples rotate continuously for quick review.</li>
+                <li>Photos can be opened larger to inspect materials and completed details.</li>
+                <li>The carousel includes the larger project archive beyond the featured grid.</li>
+              </ul>
+            </div>
           </div>
           <div class="gallery-carousel-block reveal" id="galleryCarouselBlock">
             <div class="gallery-carousel-heading">
@@ -425,15 +458,15 @@
         <div class="container location-layout">
           <div class="location-copy reveal">
             <p class="eyebrow">Service location</p>
-            <h2>BFTF Construction LLC in Brockton, Massachusetts.</h2>
-            <p>Use the map to open directions or contact the team to schedule a free inspection anywhere within their Massachusetts service area.</p>
+            <h2>BFTF Construction LLC serves Massachusetts and Rhode Island.</h2>
+            <p>Use the map to view the service area or contact the team to schedule a free inspection anywhere within Massachusetts and Rhode Island.</p>
             <address>
-              <strong>29 FOREST RD 02301 BROCKTON MA</strong>
-              <a href="https://www.google.com/maps/search/?api=1&query=29%20FOREST%20RD%2002301%20BROCKTON%20MA" target="_blank" rel="noopener">Open in Google Maps</a>
+              <strong>Massachusetts and Rhode Island</strong>
+              <a href="https://www.google.com/maps/search/?api=1&query=Massachusetts%20and%20Rhode%20Island" target="_blank" rel="noopener">Open in Google Maps</a>
             </address>
           </div>
           <div class="map-frame reveal">
-            <iframe title="Map to BFTF Construction LLC" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=29%20FOREST%20RD%2002301%20BROCKTON%20MA&amp;t=m&amp;z=14&amp;output=embed"></iframe>
+            <iframe title="Map to BFTF Construction LLC service area" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Massachusetts%20and%20Rhode%20Island&amp;t=m&amp;z=7&amp;output=embed"></iframe>
           </div>
         </div>
       </section>
@@ -450,7 +483,7 @@
             </div>
             <address>
               <strong>BFTF Construction LLC</strong>
-              <span>29 FOREST RD 02301 BROCKTON MA</span>
+              <span>Massachusetts and Rhode Island</span>
               <a href="mailto:bftfconstruction2023@gmail.com">BFTFCONSTRUCTION2023@GMAIL.COM</a>
             </address>
           </div>
@@ -538,7 +571,7 @@
           <h2>Contact</h2>
           <a href="tel:+15085629898">5085629898</a>
           <a href="mailto:bftfconstruction2023@gmail.com">BFTFCONSTRUCTION2023@GMAIL.COM</a>
-          <span>29 FOREST RD 02301 BROCKTON MA</span>
+          <span>Massachusetts and Rhode Island</span>
         </div>
       </div>
       <div class="footer-bottom">
@@ -576,9 +609,7 @@
         </form>
       </div>
       <button class="assistant-toggle" id="assistantToggle" type="button" aria-label="Open BFTF assistant" aria-controls="assistantPanel" aria-expanded="false">
-        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-          <path d="M16 4C9.4 4 4.2 8.6 4.2 14.4c0 3 1.4 5.8 3.8 7.7l-.9 5.1 5-2.4c1.2.3 2.5.4 3.9.4 6.6 0 11.8-4.6 11.8-10.4S22.6 4 16 4Zm-5.5 9.2h11v2.2h-11v-2.2Zm0 4.2h7.2v2.2h-7.2v-2.2Z"/>
-        </svg>
+        <img src="assets/optimized/images/bot.PNG" alt="" aria-hidden="true">
       </button>
     </section>
 

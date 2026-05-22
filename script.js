@@ -1,9 +1,21 @@
 const phoneNumber = "15085629898";
 const contactEmail = "bftfconstruction2023@gmail.com";
+const galleryPhotoCount = 122;
+const loaderImage = document.getElementById("loaderImage");
 const loaderStartedAt = Date.now();
-const loaderMinimumDuration = 1400;
-const loaderFallbackDuration = 2600;
+const loaderProgressDuration = 2450;
+const loaderMinimumDuration = loaderProgressDuration;
+const loaderFallbackDuration = loaderMinimumDuration;
 document.body.classList.add("is-loading");
+
+function getGalleryImagePath(index) {
+  return `assets/optimized/gallery/photo-${String(index + 1).padStart(3, "0")}.webp`;
+}
+
+if (loaderImage) {
+  const randomLoaderIndex = Math.floor(Math.random() * galleryPhotoCount);
+  loaderImage.src = getGalleryImagePath(randomLoaderIndex);
+}
 
 const loader = document.getElementById("siteLoader");
 let loaderHidden = false;
@@ -110,10 +122,9 @@ filterButtons.forEach((button) => {
   });
 });
 
-const fullGalleryImages = Array.from({ length: 122 }, (_, index) => {
-  return `assets/optimized/gallery/photo-${String(index + 1).padStart(3, "0")}.webp`;
-});
+const fullGalleryImages = Array.from({ length: galleryPhotoCount }, (_, index) => getGalleryImagePath(index));
 const galleryCarouselTrack = document.getElementById("galleryCarouselTrack");
+const galleryCarouselViewport = document.getElementById("galleryCarouselViewport");
 const galleryLightbox = document.getElementById("galleryLightbox");
 const lightboxImage = document.getElementById("lightboxImage");
 const lightboxClose = document.getElementById("lightboxClose");
@@ -139,11 +150,13 @@ function createGalleryButton(src, itemNumber, className, isClone = false) {
   const button = document.createElement("button");
   button.className = className;
   button.type = "button";
+  button.draggable = false;
   button.setAttribute("aria-label", `Open project photo ${itemNumber}`);
   if (isClone) {
     button.tabIndex = -1;
   }
-  button.innerHTML = `<img src="${src}" alt="BFTF Construction LLC project photo ${itemNumber}" loading="lazy" decoding="async" fetchpriority="low">`;
+  button.innerHTML = `<img src="${src}" alt="BFTF Construction LLC project photo ${itemNumber}" loading="lazy" decoding="async" fetchpriority="low" draggable="false">`;
+  button.addEventListener("dragstart", (event) => event.preventDefault());
   button.addEventListener("click", () => openLightbox(src));
   return button;
 }
@@ -226,6 +239,113 @@ if (gallerySection && galleryCarouselTrack && "IntersectionObserver" in window) 
   galleryMotionObserver.observe(gallerySection);
 }
 
+if (galleryCarouselViewport && galleryCarouselTrack) {
+  let isGalleryDragging = false;
+  let didGalleryDrag = false;
+  let shouldBlockGalleryClick = false;
+  let galleryClickBlockTimer = 0;
+  let galleryDragStartX = 0;
+  let galleryDragStartScroll = 0;
+  let galleryLastX = 0;
+  let galleryLastTime = 0;
+  let galleryVelocity = 0;
+  let galleryMomentumFrame = 0;
+
+  function stopGalleryMomentum() {
+    if (!galleryMomentumFrame) return;
+    window.cancelAnimationFrame(galleryMomentumFrame);
+    galleryMomentumFrame = 0;
+  }
+
+  function startGalleryMomentum() {
+    if (!didGalleryDrag || Math.abs(galleryVelocity) < 0.08) return;
+
+    let velocity = galleryVelocity * 16;
+    let previousTime = performance.now();
+    const friction = 0.94;
+
+    function step(time) {
+      const elapsed = Math.min(32, time - previousTime);
+      previousTime = time;
+      galleryCarouselViewport.scrollLeft -= velocity * (elapsed / 16);
+      velocity *= friction;
+
+      if (Math.abs(velocity) < 0.35) {
+        galleryMomentumFrame = 0;
+        return;
+      }
+
+      galleryMomentumFrame = window.requestAnimationFrame(step);
+    }
+
+    galleryMomentumFrame = window.requestAnimationFrame(step);
+  }
+
+  function endGalleryDrag() {
+    if (!isGalleryDragging) return;
+    isGalleryDragging = false;
+    shouldBlockGalleryClick = didGalleryDrag;
+    galleryCarouselViewport.classList.remove("is-dragging");
+    galleryCarouselTrack.classList.remove("is-user-dragging");
+    startGalleryMomentum();
+
+    window.clearTimeout(galleryClickBlockTimer);
+    galleryClickBlockTimer = window.setTimeout(() => {
+      shouldBlockGalleryClick = false;
+    }, 250);
+  }
+
+  galleryCarouselViewport.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    stopGalleryMomentum();
+    isGalleryDragging = true;
+    didGalleryDrag = false;
+    galleryVelocity = 0;
+    galleryDragStartX = event.clientX;
+    galleryDragStartScroll = galleryCarouselViewport.scrollLeft;
+    galleryLastX = event.clientX;
+    galleryLastTime = event.timeStamp || performance.now();
+    galleryCarouselViewport.classList.add("is-dragging");
+    galleryCarouselTrack.classList.add("is-user-dragging");
+    galleryCarouselViewport.setPointerCapture?.(event.pointerId);
+  });
+
+  galleryCarouselViewport.addEventListener("pointermove", (event) => {
+    if (!isGalleryDragging) return;
+    const distance = event.clientX - galleryDragStartX;
+    if (Math.abs(distance) > 4) {
+      didGalleryDrag = true;
+    }
+    const time = event.timeStamp || performance.now();
+    const elapsed = Math.max(16, time - galleryLastTime);
+    galleryVelocity = (event.clientX - galleryLastX) / elapsed;
+    galleryLastX = event.clientX;
+    galleryLastTime = time;
+    galleryCarouselViewport.scrollLeft = galleryDragStartScroll - distance;
+    event.preventDefault();
+  });
+
+  galleryCarouselViewport.addEventListener("pointerup", endGalleryDrag);
+  galleryCarouselViewport.addEventListener("pointercancel", endGalleryDrag);
+  galleryCarouselViewport.addEventListener("pointerleave", endGalleryDrag);
+  galleryCarouselViewport.addEventListener(
+    "click",
+    (event) => {
+      if (!shouldBlockGalleryClick) return;
+      event.preventDefault();
+      event.stopPropagation();
+      window.clearTimeout(galleryClickBlockTimer);
+      shouldBlockGalleryClick = false;
+    },
+    true
+  );
+
+  galleryCarouselViewport.addEventListener("dragstart", (event) => {
+    event.preventDefault();
+  });
+}
+
 lightboxClose?.addEventListener("click", closeLightbox);
 galleryLightbox?.addEventListener("click", (event) => {
   if (event.target === galleryLightbox) closeLightbox();
@@ -271,6 +391,7 @@ const videoNext = document.getElementById("videoNext");
 const videoSection = document.querySelector(".video-showcase");
 let activeGalleryVideo = 0;
 let videoCanAutoplay = !videoSection;
+let hasLoadedGalleryVideo = false;
 
 function applyVideoSoundPreference() {
   if (!galleryVideoPlayer) return;
@@ -280,7 +401,7 @@ function applyVideoSoundPreference() {
 }
 
 function playActiveGalleryVideo() {
-  if (!galleryVideoPlayer) return;
+  if (!galleryVideoPlayer || !hasLoadedGalleryVideo) return;
   if (document.hidden || !videoCanAutoplay) return;
   galleryVideoPlayer.play().catch(() => {});
 }
@@ -289,13 +410,29 @@ function setGalleryVideo(index, shouldPlay = true) {
   if (!galleryVideoPlayer || !galleryVideos.length) return;
   activeGalleryVideo = (index + galleryVideos.length) % galleryVideos.length;
   const video = galleryVideos[activeGalleryVideo];
-  galleryVideoPlayer.src = encodeURI(video.src);
+  if (galleryVideoPlayer.dataset.activeSrc !== video.src) {
+    galleryVideoPlayer.src = encodeURI(video.src);
+    galleryVideoPlayer.dataset.activeSrc = video.src;
+  }
   galleryVideoPlayer.poster = "assets/optimized/images/hero-house.webp";
   galleryVideoPlayer.autoplay = true;
   galleryVideoPlayer.playsInline = true;
+  galleryVideoPlayer.preload = "metadata";
+  hasLoadedGalleryVideo = true;
   applyVideoSoundPreference();
   galleryVideoPlayer.load();
 
+  if (shouldPlay) {
+    playActiveGalleryVideo();
+  }
+}
+
+function loadInitialGalleryVideo(shouldPlay = true) {
+  if (!galleryVideoPlayer || !galleryVideos.length) return;
+  if (!hasLoadedGalleryVideo) {
+    setGalleryVideo(activeGalleryVideo, shouldPlay);
+    return;
+  }
   if (shouldPlay) {
     playActiveGalleryVideo();
   }
@@ -307,11 +444,25 @@ function changeGalleryVideo(direction) {
 
 applyVideoSoundPreference();
 videoCanAutoplay = !videoSection || videoSection.getBoundingClientRect().top < window.innerHeight;
-setGalleryVideo(0, videoCanAutoplay);
+if (galleryVideoPlayer) {
+  galleryVideoPlayer.poster = "assets/optimized/images/hero-house.webp";
+  galleryVideoPlayer.preload = "none";
+}
+if (videoCanAutoplay) {
+  loadInitialGalleryVideo(true);
+}
 videoPrev?.addEventListener("click", () => changeGalleryVideo(-1));
 videoNext?.addEventListener("click", () => changeGalleryVideo(1));
+galleryVideoPlayer?.addEventListener("pointerdown", () => loadInitialGalleryVideo(true), { passive: true });
+galleryVideoPlayer?.addEventListener("keydown", (event) => {
+  if (event.key === " " || event.key === "Enter") {
+    loadInitialGalleryVideo(true);
+  }
+});
 galleryVideoPlayer?.addEventListener("ended", () => {
-  setGalleryVideo(activeGalleryVideo + 1, true);
+  if (hasLoadedGalleryVideo) {
+    setGalleryVideo(activeGalleryVideo + 1, true);
+  }
 });
 
 if (videoSection && galleryVideoPlayer && "IntersectionObserver" in window) {
@@ -319,7 +470,7 @@ if (videoSection && galleryVideoPlayer && "IntersectionObserver" in window) {
     (entries) => {
       videoCanAutoplay = entries.some((entry) => entry.isIntersecting);
       if (videoCanAutoplay) {
-        playActiveGalleryVideo();
+        loadInitialGalleryVideo(true);
       } else {
         galleryVideoPlayer.pause();
       }
@@ -509,11 +660,11 @@ if (assistantWidget && assistantToggle && assistantPanel && assistantMessages &&
         "I only use BFTF's listed service information here. For anything outside that scope, the best next step is to contact the team directly.",
       contactTitle: "Contact and quote",
       contactText:
-        "BFTF serves residential and commercial clients in Massachusetts. You can request a free inspection or quote by WhatsApp, phone or email.",
+        "BFTF serves residential and commercial clients in Massachusetts and Rhode Island. You can request a free inspection or quote by WhatsApp, phone or email.",
       contactItems: [
         "Phone: (508) 562-9898",
         "Email: bftfconstruction2023@gmail.com",
-        "Location: 29 Forest Rd, Brockton, MA 02301"
+        "Location: Massachusetts and Rhode Island"
       ],
       cta: "Open WhatsApp",
       servicesTitle: "BFTF services",
@@ -523,6 +674,39 @@ if (assistantWidget && assistantToggle && assistantPanel && assistantMessages &&
         "I did not find that exact topic in the company information. Ask me about one of these areas and I will stay focused on it.",
       thanksTitle: "Glad to help",
       thanksText: "Tell me the service area you are interested in and I will keep the answer focused there."
+    },
+    es: {
+      botName: "Asistente BFTF",
+      userName: "Tu",
+      welcomeTitle: "Como puedo ayudar?",
+      welcomeText:
+        "Puedo responder usando la informacion de servicios de BFTF Construction LLC y mantener la conversacion enfocada en el area que preguntes.",
+      welcomeItems: [
+        "Roofing, siding y trabajo exterior",
+        "Remodelacion de cocinas, banos e interiores",
+        "Pisos, drywall, pintura y carpinteria",
+        "Concreto, masonry, landscaping, electricidad y plomeria"
+      ],
+      quoteRule:
+        "Para precio, medidas, materiales, permisos o tiempo exacto, BFTF debe revisar el proyecto primero. La inspeccion y cotizacion son gratis.",
+      scopeRule:
+        "Aqui solo uso la informacion de servicios de BFTF. Para algo fuera de ese alcance, lo mejor es contactar al equipo directamente.",
+      contactTitle: "Contacto y cotizacion",
+      contactText:
+        "BFTF atiende clientes residenciales y comerciales en Massachusetts and Rhode Island. Puedes pedir una inspeccion o cotizacion gratis por WhatsApp, telefono o email.",
+      contactItems: [
+        "Telefono: (508) 562-9898",
+        "Email: bftfconstruction2023@gmail.com",
+        "Ubicacion: Massachusetts and Rhode Island"
+      ],
+      cta: "Abrir WhatsApp",
+      servicesTitle: "Servicios de BFTF",
+      servicesText: "Estas son las areas principales de servicio listadas para BFTF Construction LLC.",
+      fallbackTitle: "Puedo ayudar con servicios de BFTF",
+      fallbackText:
+        "No encontre ese tema exacto en la informacion de la compania. Preguntame por una de estas areas y mantengo la respuesta enfocada.",
+      thanksTitle: "Con gusto",
+      thanksText: "Dime el area de servicio que te interesa y mantengo la respuesta enfocada."
     }
   };
 
@@ -1116,8 +1300,12 @@ if (assistantWidget && assistantToggle && assistantPanel && assistantMessages &&
       .trim();
   }
 
-  function getAssistantLanguage() {
-    return "en";
+  function getAssistantLanguage(message = "") {
+    const normalized = normalizeAssistantText(message);
+    const spanishScore = spanishHints.reduce((total, hint) => total + (normalized.includes(hint) ? 1 : 0), 0);
+    const englishScore = englishHints.reduce((total, hint) => total + (normalized.includes(hint) ? 1 : 0), 0);
+
+    return spanishScore > englishScore ? "es" : "en";
   }
 
   function hasAnyTerm(normalized, terms) {
@@ -1282,14 +1470,14 @@ if (assistantWidget && assistantToggle && assistantPanel && assistantMessages &&
       return { lang, response: buildThanksResponse(lang) };
     }
 
-    if (isServicesOverview(normalized)) {
-      return { lang, response: buildOverviewResponse(lang) };
-    }
-
     const detectedTopic = findAssistantTopic(message);
     if (detectedTopic) {
       activeAssistantTopic = detectedTopic;
       return { lang, response: buildTopicResponse(detectedTopic, lang, message) };
+    }
+
+    if (isServicesOverview(normalized)) {
+      return { lang, response: buildOverviewResponse(lang) };
     }
 
     if (activeAssistantTopic && (isFollowUp(normalized) || hasAnyTerm(normalized, priceOrTimeTerms))) {

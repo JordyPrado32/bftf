@@ -9,10 +9,155 @@ function canUseWebGL() {
   return Boolean(canvas.getContext("webgl2") || canvas.getContext("webgl"));
 }
 
+function initConstructionCart(mountElement, bodyClass, options = {}) {
+  if (!mountElement || !canUseWebGL()) return;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-2.35, 2.35, 1.42, -1.42, 0.1, 20);
+  const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true,
+    powerPreference: "low-power"
+  });
+  const cart = new THREE.Group();
+  const clock = new THREE.Clock();
+  const scale = options.scale || 1;
+  const stopAfterMs = Number(options.stopAfterMs) || 0;
+  let animationFrame = 0;
+  let isStopped = false;
+
+  renderer.setClearColor(0x000000, 0);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.08;
+  mountElement.appendChild(renderer.domElement);
+  document.body.classList.add(bodyClass);
+
+  const materials = {
+    orange: new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.46, metalness: 0.05 }),
+    yellow: new THREE.MeshStandardMaterial({ color: 0xffd54f, roughness: 0.38, metalness: 0.06 }),
+    dark: new THREE.MeshStandardMaterial({ color: 0x17191c, roughness: 0.64 }),
+    tire: new THREE.MeshStandardMaterial({ color: 0x101113, roughness: 0.72 }),
+    rim: new THREE.MeshStandardMaterial({ color: 0xb8bec7, roughness: 0.42, metalness: 0.18 }),
+    glass: new THREE.MeshStandardMaterial({ color: 0x85c8dd, emissive: 0x15343f, emissiveIntensity: 0.18, roughness: 0.24 }),
+    blade: new THREE.MeshStandardMaterial({ color: 0x6b7280, roughness: 0.5, metalness: 0.18 })
+  };
+
+  function addBox(size, position, material, parent = cart) {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), material);
+    mesh.position.set(...position);
+    parent.add(mesh);
+    return mesh;
+  }
+
+  function addWheel(x, z) {
+    const wheel = new THREE.Group();
+    const tire = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.22, 28), materials.tire);
+    tire.rotation.x = Math.PI / 2;
+    const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.235, 24), materials.rim);
+    rim.rotation.x = Math.PI / 2;
+    wheel.add(tire, rim);
+    wheel.position.set(x, -0.38, z);
+    cart.add(wheel);
+    return wheel;
+  }
+
+  addBox([2.05, 0.38, 0.9], [-0.18, -0.05, 0], materials.orange);
+  addBox([0.88, 0.72, 0.78], [-0.65, 0.48, 0], materials.yellow);
+  addBox([0.48, 0.36, 0.8], [-1.02, 0.53, 0.02], materials.glass);
+  addBox([0.72, 0.08, 1.02], [-0.66, 0.9, 0], materials.dark);
+  addBox([0.82, 0.18, 0.86], [0.5, 0.27, 0], materials.dark);
+  addBox([1.8, 0.12, 0.98], [-0.2, -0.31, 0], materials.dark);
+
+  const blade = new THREE.Group();
+  addBox([0.22, 0.72, 1.02], [0, 0, 0], materials.blade, blade);
+  addBox([0.84, 0.08, 0.1], [-0.38, 0.1, -0.44], materials.dark, blade);
+  blade.position.set(1.35, -0.05, 0);
+  blade.rotation.z = -0.22;
+  cart.add(blade);
+
+  const wheels = [addWheel(-0.82, 0.48), addWheel(0.62, 0.48), addWheel(-0.82, -0.48), addWheel(0.62, -0.48)];
+  cart.scale.setScalar(scale);
+  cart.rotation.y = -0.28;
+  scene.add(cart);
+
+  scene.add(new THREE.HemisphereLight(0xfff7dd, 0x252525, 2.4));
+  const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+  keyLight.position.set(3, 4, 4);
+  scene.add(keyLight);
+  const goldLight = new THREE.DirectionalLight(0xffd54f, 1.4);
+  goldLight.position.set(-3, 2.6, 2);
+  scene.add(goldLight);
+
+  camera.position.set(3.2, 2.05, 4.8);
+  camera.lookAt(0, 0.08, 0);
+
+  function resize() {
+    const rect = mountElement.getBoundingClientRect();
+    const width = Math.max(1, rect.width || 100);
+    const height = Math.max(1, rect.height || 56);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+    renderer.setSize(width, height, false);
+  }
+
+  function render() {
+    if (isStopped) return;
+    const elapsed = clock.getElapsedTime();
+    if (!prefersReducedMotion) {
+      cart.position.y = Math.sin(elapsed * 7.5) * 0.035;
+      blade.rotation.z = -0.22 + Math.sin(elapsed * 4.2) * 0.045;
+      wheels.forEach((wheel) => {
+        wheel.rotation.z = -elapsed * 5.8;
+      });
+    }
+    renderer.render(scene, camera);
+    animationFrame = window.requestAnimationFrame(render);
+  }
+
+  resize();
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(resize).observe(mountElement);
+  } else {
+    window.addEventListener("resize", resize, { passive: true });
+  }
+
+  if (prefersReducedMotion) {
+    renderer.render(scene, camera);
+    return;
+  }
+
+  animationFrame = window.requestAnimationFrame(render);
+  if (stopAfterMs) {
+    window.setTimeout(() => {
+      isStopped = true;
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      renderer.render(scene, camera);
+    }, stopAfterMs);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (isStopped) return;
+    if (document.hidden) {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+    } else if (!animationFrame) {
+      animationFrame = window.requestAnimationFrame(render);
+    }
+  });
+}
+
+initConstructionCart(document.getElementById("loaderThreeCart"), "has-loader-three", { scale: 0.98, stopAfterMs: 3300 });
+initConstructionCart(document.getElementById("scrollMachine"), "has-scroll-three", { scale: 1.25 });
+
 if (mount && canUseWebGL()) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" });
+  const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true,
+    powerPreference: "low-power"
+  });
   const home = new THREE.Group();
   const clock = new THREE.Clock();
   let isSceneVisible = true;
