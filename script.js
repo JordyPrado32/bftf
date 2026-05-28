@@ -740,14 +740,18 @@ if (assistantWidget && assistantToggle && assistantPanel && assistantMessages &&
       services: {
         en: [
           "Full roof replacement and roof repairs",
-          "Asphalt shingle roofing, flat roofing systems, EPDM rubber roofing and metal roofing",
+          "Asphalt shingle roofing and flat roofing systems",
+          "EPDM rubber roofing",
+          "Metal roofing",
           "Leak detection, flashing installation and skylight installation",
           "Roof inspections, storm damage repairs and insurance claim assistance",
           "Solar panel removal and reinstallation when roofing work requires it"
         ],
         es: [
           "Reemplazo completo de techo y reparaciones",
-          "Asphalt shingles, sistemas de techo plano, EPDM rubber roofing y metal roofing",
+          "Asphalt shingles y sistemas de techo plano",
+          "EPDM rubber roofing",
+          "Metal roofing",
           "Deteccion de filtraciones, instalacion de flashing e instalacion de skylights",
           "Inspecciones de techo, reparaciones por tormenta y asistencia con reclamos de seguro",
           "Remocion y reinstalacion de paneles solares cuando el trabajo de techo lo requiere"
@@ -1012,14 +1016,24 @@ if (assistantWidget && assistantToggle && assistantPanel && assistantMessages &&
       ],
       services: {
         en: [
-          "Concrete slabs, driveways, sidewalks and patios",
-          "Retaining walls, concrete stairs and decorative concrete",
+          "Concrete slabs",
+          "Driveways",
+          "Sidewalks",
+          "Patios",
+          "Retaining walls",
+          "Concrete stairs",
+          "Decorative concrete",
           "Brick and stone work",
           "Foundation repairs"
         ],
         es: [
-          "Concrete slabs, driveways, sidewalks y patios",
-          "Retaining walls, escaleras de concreto y decorative concrete",
+          "Concrete slabs",
+          "Driveways",
+          "Sidewalks",
+          "Patios",
+          "Retaining walls",
+          "Escaleras de concreto",
+          "Decorative concrete",
           "Trabajos de brick y stone",
           "Reparaciones de foundation"
         ]
