@@ -283,10 +283,6 @@ if (mount && canUseWebGL()) {
 
   addBox(home, [1.8, 0.14, 0.85], [0, 0.22, 1.85], materials.deck);
   addBox(home, [1.4, 0.12, 0.38], [0, 0.04, 2.18], materials.deck);
-  [-0.78, 0.78].forEach((x) => {
-    addBox(home, [0.08, 1.08, 0.08], [x, 0.84, 1.88], materials.trim);
-  });
-  addBox(home, [1.8, 0.08, 0.08], [0, 1.36, 1.88], materials.trim);
 
   addBox(home, [0.38, 1.05, 0.4], [1.42, 3.02, -0.64], materials.brick);
   addBox(home, [0.48, 0.14, 0.5], [1.42, 3.62, -0.64], materials.roofTrim);
