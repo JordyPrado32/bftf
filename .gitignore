@@ -438,3 +438,6 @@ assets/images/
 
 # Codex temporary files
 .codex*
+
+# Wrangler local state
+.wrangler/
